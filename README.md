@@ -8,6 +8,30 @@
 
 A Model Context Protocol server for [Aha!](https://www.aha.io/).
 
+## Installation
+
+```
+% go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.1.0
+```
+
+## Configuration
+
+Configure with the following:
+
+```json
+{
+	"mcpServers": {
+		"aha": {
+			"command": "aha-mcp-server",
+			"env": {
+				"AHA_API_TOKEN": "<your_aha_token>",
+				"AHA_DOMAIN": "<your_aha_subdomain>"
+			}
+		}
+	}
+}
+```
+
  [build-status-svg]: https://github.com/grokify/aha-mcp-server/actions/workflows/ci.yaml/badge.svg?branch=main
  [build-status-url]: https://github.com/grokify/aha-mcp-server/actions/workflows/ci.yaml
  [lint-status-svg]: https://github.com/grokify/aha-mcp-server/actions/workflows/lint.yaml/badge.svg?branch=main
