@@ -1,4 +1,4 @@
-package ahamcpserver
+package tools
 
 import (
 	"github.com/grokify/go-aha/v3/oag7/aha"

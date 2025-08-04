@@ -11,6 +11,8 @@ import (
 	"github.com/grokify/mogo/net/http/httputilmore"
 	"github.com/jessevdk/go-flags"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
+
+	"github.com/grokify/aha-mcp-server/tools"
 )
 
 type Options struct {
@@ -55,7 +57,7 @@ func ListenAndServe(ctx context.Context, opts *Options) {
 			Title:   "aha-mcp-server",
 			Version: "1.0.0"}, nil)
 
-	if toolsClient, err := NewToolsClient(opts.AHASubdomain, opts.AHAAPIKey); err != nil {
+	if toolsClient, err := tools.NewToolsClient(opts.AHASubdomain, opts.AHAAPIKey); err != nil {
 		log.Fatal(err)
 	} else {
 		toolsClient.AddTools(svr)
