@@ -1,4 +1,3 @@
-
 package tools
 
 import (
@@ -28,7 +27,7 @@ func (s *ToolsClient) GetComment(ctx context.Context, session *mcp.ServerSession
 	} else if commentJSON, err := io.ReadAll(resp.Body); err != nil {
 		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil
 	} else if jsonData, err := json.MarshalIndent(map[string]any{
-		"comment": commentJSON,
+		"comment":     commentJSON,
 		"status_code": resp.StatusCode,
 	}, "", "  "); err != nil {
 		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil
