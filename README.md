@@ -61,6 +61,15 @@ Configure with the following:
 }
 ```
 
+## Other Aha! MCP Servers
+
+1. FOSS
+    1. [Official Aha! MCP Server](https://support.aha.io/aha-develop/integrations/mcp-server/mcp-server-connection~7493691606168806509) (3 tools)
+    1. [`github.com/popand/aha-mcp`](https://github.com/popand/aha-mcp) (4 tools)
+1. SaaS
+    1. [Zapier](https://zapier.com/mcp/aha) (2 tools)
+
+
  [build-status-svg]: https://github.com/grokify/aha-mcp-server/actions/workflows/ci.yaml/badge.svg?branch=main
  [build-status-url]: https://github.com/grokify/aha-mcp-server/actions/workflows/ci.yaml
  [lint-status-svg]: https://github.com/grokify/aha-mcp-server/actions/workflows/lint.yaml/badge.svg?branch=main
