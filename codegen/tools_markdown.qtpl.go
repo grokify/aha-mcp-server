@@ -37,7 +37,7 @@ func StreamToolsMarkdown(qw422016 *qt422016.Writer, objs []stringcase.CaserNoun)
 		qw422016.E().S(obj.Plural.Display())
 //line tools_markdown.qtpl:5
 		qw422016.N().S(`
-  - [x] `)
+    - [x] `)
 //line tools_markdown.qtpl:5
 		qw422016.N().S("`")
 //line tools_markdown.qtpl:5

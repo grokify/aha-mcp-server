@@ -11,31 +11,29 @@ A Model Context Protocol server for [Aha!](https://www.aha.io/).
 ## Tools
 
 1. [ ] Comments
-  - [x] `get_comment`: Get a specific comment
+    - [x] `get_comment`: Get a specific comment
 1. [ ] Epics
-  - [x] `get_epic`: Get a specific epic
+    - [x] `get_epic`: Get a specific epic
 1. [ ] Features
-  - [x] `get_feature`: Get a specific feature
+    - [x] `get_feature`: Get a specific feature
 1. [ ] Goals
-  - [x] `get_goal`: Get a specific goal
-1. [ ] Ideas
-  - [x] `get_idea`: Get a specific idea
+    - [x] `get_goal`: Get a specific goal
 1. [ ] Initiatives
-  - [x] `get_initiative`: Get a specific initiative
+    - [x] `get_initiative`: Get a specific initiative
 1. [ ] Key Results
-  - [x] `get_key_result`: Get a specific key result
+    - [x] `get_key_result`: Get a specific key result
 1. [ ] Personas
-  - [x] `get_persona`: Get a specific persona
+    - [x] `get_persona`: Get a specific persona
 1. [ ] Releases
-  - [x] `get_release`: Get a specific release
+    - [x] `get_release`: Get a specific release
 1. [ ] Requirements
-  - [x] `get_requirement`: Get a specific requirement
+    - [x] `get_requirement`: Get a specific requirement
 1. [ ] Teams
-  - [x] `get_team`: Get a specific team
+    - [x] `get_team`: Get a specific team
 1. [ ] Users
-  - [x] `get_user`: Get a specific user
+    - [x] `get_user`: Get a specific user
 1. [ ] Workflows
-  - [x] `get_workflow`: Get a specific workflow
+    - [x] `get_workflow`: Get a specific workflow
 
 ## Installation
 
