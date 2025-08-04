@@ -18,8 +18,8 @@ type GetGoalParams struct {
 	GoalID string `json:"goal_id" description:"Goal ID to get"`
 }
 
-func (s *ToolsClient) GetGoal(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetGoalParams]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) GetGoal(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetGoalParams]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/goals/%s", params.Arguments.GoalID),
 	}); err != nil {

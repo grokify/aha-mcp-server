@@ -18,8 +18,8 @@ type GetKeyResultParams struct {
 	KeyResultID string `json:"key_result_id" description:"Key Result ID to get"`
 }
 
-func (s *ToolsClient) GetKeyResult(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetKeyResultParams]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) GetKeyResult(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetKeyResultParams]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/key_results/%s", params.Arguments.KeyResultID),
 	}); err != nil {

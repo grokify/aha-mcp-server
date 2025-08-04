@@ -18,8 +18,8 @@ type GetUserParams struct {
 	UserID string `json:"user_id" description:"User ID to get"`
 }
 
-func (s *ToolsClient) GetUser(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetUserParams]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) GetUser(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetUserParams]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/users/%s", params.Arguments.UserID),
 	}); err != nil {

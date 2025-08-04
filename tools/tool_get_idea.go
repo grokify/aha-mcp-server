@@ -15,9 +15,9 @@ type GetIdeaParams struct {
 	IdeaID string `json:"idea_id" description:"Idea ID to get"`
 }
 
-func (s *ToolsClient) GetIdea(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetIdeaParams]) (*mcp.CallToolResultFor[any], error) {
-	idea, resp, err := s.client.IdeasAPI.GetIdeaExecute(
-		s.client.IdeasAPI.GetIdea(ctx, params.Arguments.IdeaID))
+func (tc *ToolsClient) GetIdea(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetIdeaParams]) (*mcp.CallToolResultFor[any], error) {
+	idea, resp, err := tc.client.IdeasAPI.GetIdeaExecute(
+		tc.client.IdeasAPI.GetIdea(ctx, params.Arguments.IdeaID))
 
 	if err != nil {
 		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error getting idea: %v", err), true), nil

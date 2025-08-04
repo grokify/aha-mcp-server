@@ -18,8 +18,8 @@ type GetFeatureParams struct {
 	FeatureID string `json:"feature_id" description:"Feature ID to get"`
 }
 
-func (s *ToolsClient) GetFeature(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetFeatureParams]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) GetFeature(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetFeatureParams]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/features/%s", params.Arguments.FeatureID),
 	}); err != nil {

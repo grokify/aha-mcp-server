@@ -18,8 +18,8 @@ type GetInitiativeParams struct {
 	InitiativeID string `json:"initiative_id" description:"Initiative ID to get"`
 }
 
-func (s *ToolsClient) GetInitiative(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetInitiativeParams]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) GetInitiative(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetInitiativeParams]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/initiatives/%s", params.Arguments.InitiativeID),
 	}); err != nil {

@@ -18,8 +18,8 @@ type GetEpicParams struct {
 	EpicID string `json:"epic_id" description:"Epic ID to get"`
 }
 
-func (s *ToolsClient) GetEpic(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetEpicParams]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) GetEpic(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetEpicParams]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/epics/%s", params.Arguments.EpicID),
 	}); err != nil {

@@ -18,8 +18,8 @@ type GetPersonaParams struct {
 	PersonaID string `json:"persona_id" description:"Persona ID to get"`
 }
 
-func (s *ToolsClient) GetPersona(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetPersonaParams]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) GetPersona(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetPersonaParams]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/personas/%s", params.Arguments.PersonaID),
 	}); err != nil {

@@ -68,7 +68,7 @@ type Get`)
 	qw422016.N().S(`
 }
 
-func (s *ToolsClient) Get`)
+func (tc *ToolsClient) Get`)
 //line tool_get_object_template.qtpl:23
 	qw422016.N().S(obj.Singular.PascalCase())
 //line tool_get_object_template.qtpl:23
@@ -77,7 +77,7 @@ func (s *ToolsClient) Get`)
 	qw422016.E().S(obj.Singular.PascalCase())
 //line tool_get_object_template.qtpl:23
 	qw422016.N().S(`Params]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/`)
 //line tool_get_object_template.qtpl:26

@@ -18,8 +18,8 @@ type GetTeamParams struct {
 	TeamID string `json:"team_id" description:"Team ID to get"`
 }
 
-func (s *ToolsClient) GetTeam(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetTeamParams]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) GetTeam(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetTeamParams]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/teams/%s", params.Arguments.TeamID),
 	}); err != nil {

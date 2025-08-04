@@ -18,8 +18,8 @@ type GetCommentParams struct {
 	CommentID string `json:"comment_id" description:"Comment ID to get"`
 }
 
-func (s *ToolsClient) GetComment(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetCommentParams]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) GetComment(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetCommentParams]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/comments/%s", params.Arguments.CommentID),
 	}); err != nil {

@@ -18,8 +18,8 @@ type GetWorkflowParams struct {
 	WorkflowID string `json:"workflow_id" description:"Workflow ID to get"`
 }
 
-func (s *ToolsClient) GetWorkflow(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetWorkflowParams]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) GetWorkflow(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetWorkflowParams]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/workflows/%s", params.Arguments.WorkflowID),
 	}); err != nil {

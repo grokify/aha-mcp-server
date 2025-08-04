@@ -20,8 +20,8 @@ type Get{%s obj.Singular.PascalCase() %}Params struct {
 	{%s obj.Singular.PascalCase() %}ID string `json:"{%s obj.Singular.SnakeCase() %}_id" description:"{%s obj.Singular.Display() %} ID to get"`
 }
 
-func (s *ToolsClient) Get{%s= obj.Singular.PascalCase() %}(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[Get{%s obj.Singular.PascalCase() %}Params]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) Get{%s= obj.Singular.PascalCase() %}(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[Get{%s obj.Singular.PascalCase() %}Params]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/{%s= obj.Plural.SnakeCase() %}/%s", params.Arguments.{%s obj.Singular.PascalCase() %}ID),
 	}); err != nil {

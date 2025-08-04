@@ -18,8 +18,8 @@ type GetRequirementParams struct {
 	RequirementID string `json:"requirement_id" description:"Requirement ID to get"`
 }
 
-func (s *ToolsClient) GetRequirement(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetRequirementParams]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) GetRequirement(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetRequirementParams]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/requirements/%s", params.Arguments.RequirementID),
 	}); err != nil {

@@ -18,8 +18,8 @@ type GetReleaseParams struct {
 	ReleaseID string `json:"release_id" description:"Release ID to get"`
 }
 
-func (s *ToolsClient) GetRelease(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetReleaseParams]) (*mcp.CallToolResultFor[any], error) {
-	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+func (tc *ToolsClient) GetRelease(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetReleaseParams]) (*mcp.CallToolResultFor[any], error) {
+	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/releases/%s", params.Arguments.ReleaseID),
 	}); err != nil {
