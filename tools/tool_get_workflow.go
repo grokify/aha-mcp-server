@@ -15,20 +15,20 @@ import (
 	"github.com/grokify/aha-mcp-server/mcputil"
 )
 
-type GetFeatureParams struct {
-	FeatureID string `json:"feature_id" description:"Feature ID to get"`
+type GetWorkflowParams struct {
+	WorkflowID string `json:"workflow_id" description:"Workflow ID to get"`
 }
 
-func (s *ToolsClient) GetFeature(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetFeatureParams]) (*mcp.CallToolResultFor[any], error) {
+func (s *ToolsClient) GetWorkflow(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetWorkflowParams]) (*mcp.CallToolResultFor[any], error) {
 	if resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
-		URL:    fmt.Sprintf("/api/v1/features/%s", params.Arguments.FeatureID),
+		URL:    fmt.Sprintf("/api/v1/workflows/%s", params.Arguments.WorkflowID),
 	}); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("error getting Feature: %v", err), true), nil
-	} else if featureJSON, err := io.ReadAll(resp.Body); err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("error getting Workflow: %v", err), true), nil
+	} else if workflowJSON, err := io.ReadAll(resp.Body); err != nil {
 		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil
 	} else if jsonData, err := json.MarshalIndent(map[string]any{
-		"feature": featureJSON,
+		"workflow": workflowJSON,
 		"status_code": resp.StatusCode,
 	}, "", "  "); err != nil {
 		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil
@@ -37,19 +37,19 @@ func (s *ToolsClient) GetFeature(ctx context.Context, session *mcp.ServerSession
 	}
 }
 
-func GetFeatureTool() *mcp.Tool {
+func GetWorkflowTool() *mcp.Tool {
 	return &mcp.Tool{
-		Name:        "get_feature",
-		Description: "Get Feature from Aha",
+		Name:        "get_workflow",
+		Description: "Get Workflow from Aha",
 		InputSchema: &jsonschema.Schema{
 			Type: "object",
 			Properties: map[string]*jsonschema.Schema{
-				"feature_id": {
+				"workflow_id": {
 					Type:        "string",
-					Description: "Feature ID to get",
+					Description: "Workflow ID to get",
 				},
 			},
-			Required: []string{"feature_id"},
+			Required: []string{"workflow_id"},
 		},
 	}
 }
