@@ -11,7 +11,7 @@ A Model Context Protocol server for [Aha!](https://www.aha.io/).
 ## Installation
 
 ```
-% go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.1.0
+% go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.3.0
 ```
 
 ## Configuration
