@@ -9,9 +9,15 @@ import (
 	"github.com/grokify/mogo/text/stringcase"
 )
 
+func BuildCodeToolsMarkdownList(dir string) error {
+	ht := ToolsMarkdown(Objects())
+	fn := "tools_markdown.md"
+	fp := filepath.Join(dir, fn)
+	return os.WriteFile(fp, []byte(ht), 0600)
+}
+
 func BuildCodeClientToolsGet(dir string) error {
-	objs := Objects()
-	ht := ClientAddTools(objs)
+	ht := ClientAddTools(Objects())
 	fn := "client_tools_add.go"
 	fp := filepath.Join(dir, fn)
 	return os.WriteFile(fp, []byte(ht), 0600)
@@ -22,6 +28,8 @@ func BuildCodeToolsGet(dir string) error {
 		dir = "."
 	}
 	if err := BuildCodeClientToolsGet(dir); err != nil {
+		return err
+	} else if err := BuildCodeToolsMarkdownList(dir); err != nil {
 		return err
 	}
 	objs := Objects()
