@@ -11,7 +11,7 @@ import (
 
 func BuildCodeToolsGet(dir string) error {
 	if d := strings.TrimSpace(dir); d == "" {
-		d = "."
+		dir = "."
 	}
 	objs := Objects()
 	for _, obj := range objs {
