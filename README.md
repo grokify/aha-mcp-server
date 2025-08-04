@@ -18,6 +18,8 @@ A Model Context Protocol server for [Aha!](https://www.aha.io/).
     - [x] `get_feature`: Get a specific feature
 1. [ ] Goals
     - [x] `get_goal`: Get a specific goal
+1. [ ] Ideas
+    - [x] `get_idea`: Get a specific idea
 1. [ ] Initiatives
     - [x] `get_initiative`: Get a specific initiative
 1. [ ] Key Results
