@@ -4,7 +4,6 @@ import (
 	"github.com/grokify/go-aha/v3/oag7/aha"
 	"github.com/grokify/go-aha/v3/oag7/client"
 	"github.com/grokify/mogo/net/http/httpsimple"
-	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
 type ToolsClient struct {
@@ -27,9 +26,4 @@ func NewToolsClient(ahaSubdomain, ahaAPIKey string) (*ToolsClient, error) {
 		config:       config,
 		simpleClient: sc,
 	}, nil
-}
-
-func (tc *ToolsClient) AddTools(svr *mcp.Server) {
-	mcp.AddTool(svr, GetFeatureTool(), tc.GetFeature)
-	mcp.AddTool(svr, GetIdeaTool(), tc.GetIdea)
 }

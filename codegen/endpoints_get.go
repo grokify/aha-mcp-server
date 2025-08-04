@@ -9,9 +9,20 @@ import (
 	"github.com/grokify/mogo/text/stringcase"
 )
 
+func BuildCodeClientToolsGet(dir string) error {
+	objs := Objects()
+	ht := ClientAddTools(objs)
+	fn := "client_tools_add.go"
+	fp := filepath.Join(dir, fn)
+	return os.WriteFile(fp, []byte(ht), 0600)
+}
+
 func BuildCodeToolsGet(dir string) error {
 	if d := strings.TrimSpace(dir); d == "" {
 		dir = "."
+	}
+	if err := BuildCodeClientToolsGet(dir); err != nil {
+		return err
 	}
 	objs := Objects()
 	for _, obj := range objs {
