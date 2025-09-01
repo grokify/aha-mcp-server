@@ -40,7 +40,7 @@ A Model Context Protocol server for [Aha!](https://www.aha.io/).
 ## Installation
 
 ```
-% go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.4.1
+% go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.4.2
 ```
 
 ## Configuration
@@ -60,6 +60,12 @@ Configure with the following:
 	}
 }
 ```
+
+## Updating
+
+### Version Number
+
+In preparation for updating the version number, update it in this ]`README.md`](README.md) and in [`server.go`](server.go).
 
 ## Other Aha! MCP Servers
 
