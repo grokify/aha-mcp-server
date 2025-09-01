@@ -33,8 +33,8 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/google/jsonschema-go/jsonschema"
 	"github.com/grokify/mogo/net/http/httpsimple"
-	"github.com/modelcontextprotocol/go-sdk/jsonschema"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	"github.com/grokify/aha-mcp-server/mcputil"
@@ -67,23 +67,23 @@ type Get`)
 //line tool_get_object_template.qtpl:20
 	qw422016.N().S(`
 }
-
+	
 func (tc *ToolsClient) Get`)
 //line tool_get_object_template.qtpl:23
 	qw422016.N().S(obj.Singular.PascalCase())
 //line tool_get_object_template.qtpl:23
-	qw422016.N().S(`(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[Get`)
+	qw422016.N().S(`(ctx context.Context, req *mcp.CallToolRequest, params Get`)
 //line tool_get_object_template.qtpl:23
 	qw422016.E().S(obj.Singular.PascalCase())
 //line tool_get_object_template.qtpl:23
-	qw422016.N().S(`Params]) (*mcp.CallToolResultFor[any], error) {
+	qw422016.N().S(`Params) (*mcp.CallToolResult, any, error) {
 	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/`)
 //line tool_get_object_template.qtpl:26
 	qw422016.N().S(obj.Plural.SnakeCase())
 //line tool_get_object_template.qtpl:26
-	qw422016.N().S(`/%s", params.Arguments.`)
+	qw422016.N().S(`/%s", params.`)
 //line tool_get_object_template.qtpl:26
 	qw422016.E().S(obj.Singular.PascalCase())
 //line tool_get_object_template.qtpl:26
@@ -93,13 +93,13 @@ func (tc *ToolsClient) Get`)
 //line tool_get_object_template.qtpl:28
 	qw422016.E().S(obj.Singular.Display())
 //line tool_get_object_template.qtpl:28
-	qw422016.N().S(`: %v", err), true), nil
+	qw422016.N().S(`: %v", err), true), nil, err
 	} else if `)
 //line tool_get_object_template.qtpl:29
 	qw422016.E().S(obj.Singular.CamelCase())
 //line tool_get_object_template.qtpl:29
 	qw422016.N().S(`JSON, err := io.ReadAll(resp.Body); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
 	} else if jsonData, err := json.MarshalIndent(map[string]any{
 		"`)
 //line tool_get_object_template.qtpl:32
@@ -112,9 +112,9 @@ func (tc *ToolsClient) Get`)
 	qw422016.N().S(`JSON,
 		"status_code": resp.StatusCode,
 	}, "", "  "); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
 	} else {
-		return mcputil.NewCallToolResultForAny(string(jsonData), false), nil
+		return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 	}
 }
 

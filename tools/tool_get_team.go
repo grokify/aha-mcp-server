@@ -7,8 +7,8 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/google/jsonschema-go/jsonschema"
 	"github.com/grokify/mogo/net/http/httpsimple"
-	"github.com/modelcontextprotocol/go-sdk/jsonschema"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	"github.com/grokify/aha-mcp-server/mcputil"
@@ -18,21 +18,21 @@ type GetTeamParams struct {
 	TeamID string `json:"team_id" description:"Team ID to get"`
 }
 
-func (tc *ToolsClient) GetTeam(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetTeamParams]) (*mcp.CallToolResultFor[any], error) {
+func (tc *ToolsClient) GetTeam(ctx context.Context, req *mcp.CallToolRequest, params GetTeamParams) (*mcp.CallToolResult, any, error) {
 	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
-		URL:    fmt.Sprintf("/api/v1/teams/%s", params.Arguments.TeamID),
+		URL:    fmt.Sprintf("/api/v1/teams/%s", params.TeamID),
 	}); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("error getting Team: %v", err), true), nil
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("error getting Team: %v", err), true), nil, err
 	} else if teamJSON, err := io.ReadAll(resp.Body); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
 	} else if jsonData, err := json.MarshalIndent(map[string]any{
 		"team":        teamJSON,
 		"status_code": resp.StatusCode,
 	}, "", "  "); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
 	} else {
-		return mcputil.NewCallToolResultForAny(string(jsonData), false), nil
+		return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 	}
 }
 

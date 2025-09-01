@@ -4,8 +4,8 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
-func NewCallToolResultForAny(msg string, isError bool) *mcp.CallToolResultFor[any] {
-	return &mcp.CallToolResultFor[any]{
+func NewCallToolResultForAny(msg string, isError bool) *mcp.CallToolResult {
+	return &mcp.CallToolResult{
 		IsError: isError,
 		Content: []mcp.Content{&mcp.TextContent{Text: msg}},
 	}

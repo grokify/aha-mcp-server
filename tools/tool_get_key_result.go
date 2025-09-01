@@ -7,8 +7,8 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/google/jsonschema-go/jsonschema"
 	"github.com/grokify/mogo/net/http/httpsimple"
-	"github.com/modelcontextprotocol/go-sdk/jsonschema"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	"github.com/grokify/aha-mcp-server/mcputil"
@@ -18,21 +18,21 @@ type GetKeyResultParams struct {
 	KeyResultID string `json:"key_result_id" description:"Key Result ID to get"`
 }
 
-func (tc *ToolsClient) GetKeyResult(ctx context.Context, session *mcp.ServerSession, params *mcp.CallToolParamsFor[GetKeyResultParams]) (*mcp.CallToolResultFor[any], error) {
+func (tc *ToolsClient) GetKeyResult(ctx context.Context, req *mcp.CallToolRequest, params GetKeyResultParams) (*mcp.CallToolResult, any, error) {
 	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
-		URL:    fmt.Sprintf("/api/v1/key_results/%s", params.Arguments.KeyResultID),
+		URL:    fmt.Sprintf("/api/v1/key_results/%s", params.KeyResultID),
 	}); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("error getting Key Result: %v", err), true), nil
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("error getting Key Result: %v", err), true), nil, err
 	} else if keyResultJSON, err := io.ReadAll(resp.Body); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
 	} else if jsonData, err := json.MarshalIndent(map[string]any{
 		"key_result":  keyResultJSON,
 		"status_code": resp.StatusCode,
 	}, "", "  "); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
 	} else {
-		return mcputil.NewCallToolResultForAny(string(jsonData), false), nil
+		return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 	}
 }
 
