@@ -55,7 +55,7 @@ func ListenAndServe(ctx context.Context, opts *Options) {
 		&mcp.Implementation{
 			Name:    "aha-mcp-server",
 			Title:   "aha-mcp-server",
-			Version: "0.3.0"}, nil)
+			Version: "0.4.2"}, nil)
 
 	if toolsClient, err := tools.NewToolsClient(opts.AHASubdomain, opts.AHAAPIKey); err != nil {
 		log.Fatal(err)
