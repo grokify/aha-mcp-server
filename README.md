@@ -40,7 +40,7 @@ A Model Context Protocol server for [Aha!](https://www.aha.io/).
 ## Installation
 
 ```
-% go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.3.3
+% go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.4.1
 ```
 
 ## Configuration
