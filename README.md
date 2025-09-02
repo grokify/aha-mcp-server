@@ -227,8 +227,8 @@ When updating the version, update it in both [`README.md`](README.md) and [`serv
 | Server | Tools | License | Language |
 |--------|-------|---------|-----------|
 | **This Server** | 12 | MIT | Go |
-| [Official Aha! MCP](https://support.aha.io/aha-develop/integrations/mcp-server/mcp-server-connection~7493691606168806509) | 3 | - | - |
-| [popand/aha-mcp](https://github.com/popand/aha-mcp) | 4 | - | - |
+| [Official Aha! MCP](https://support.aha.io/aha-develop/integrations/mcp-server/mcp-server-connection~7493691606168806509) | 3 | ISC | TypeScript |
+| [popand/aha-mcp](https://github.com/popand/aha-mcp) | 4 | ISC | TypeScript |
 | [Zapier MCP](https://zapier.com/mcp/aha) | 2 | SaaS | - |
 
 ## License
