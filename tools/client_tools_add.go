@@ -14,6 +14,7 @@ func (tc *ToolsClient) AddTools(svr *mcp.Server) {
 	mcp.AddTool(svr, GetPersonaTool(), tc.GetPersona)
 	mcp.AddTool(svr, GetReleaseTool(), tc.GetRelease)
 	mcp.AddTool(svr, GetRequirementTool(), tc.GetRequirement)
+	mcp.AddTool(svr, SearchDocumentsTool(), tc.SearchDocuments)
 	mcp.AddTool(svr, GetTeamTool(), tc.GetTeam)
 	mcp.AddTool(svr, GetUserTool(), tc.GetUser)
 	mcp.AddTool(svr, GetWorkflowTool(), tc.GetWorkflow)

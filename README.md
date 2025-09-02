@@ -5,7 +5,7 @@
 [![Docs][docs-godoc-svg]][docs-godoc-url]
 [![License][license-svg]][license-url]
 
-A comprehensive Model Context Protocol (MCP) server for [Aha!](https://www.aha.io/) that enables AI assistants to interact with your Aha! workspace data. This server provides 12 tools to retrieve various Aha! objects, making it easy to integrate Aha! data into AI workflows.
+A comprehensive Model Context Protocol (MCP) server for [Aha!](https://www.aha.io/) that enables AI assistants to interact with your Aha! workspace data. This server provides 13 tools to retrieve and search various Aha! objects, making it easy to integrate Aha! data into AI workflows.
 
 ## What is MCP?
 
@@ -13,7 +13,7 @@ The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standa
 
 ## Features
 
-- **12 comprehensive tools** for accessing Aha! objects
+- **13 comprehensive tools** for accessing and searching Aha! objects
 - **Secure authentication** using Aha! API tokens
 - **Easy configuration** with environment variables
 - **Multiple deployment options** (stdio or HTTP)
@@ -22,10 +22,11 @@ The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standa
 
 ## Available Tools
 
-This server provides the following tools to retrieve Aha! data:
+This server provides the following tools to retrieve and search Aha! data:
 
 | Category | Tool | Description |
 |----------|------|-------------|
+| **Search** | `search_documents` | Search for documents across your Aha! workspace using GraphQL |
 | **Comments** | `get_comment` | Retrieve a specific comment by ID |
 | **Epics** | `get_epic` | Retrieve a specific epic by ID |
 | **Features** | `get_feature` | Retrieve a specific feature by ID |
@@ -111,21 +112,38 @@ For other MCP clients, configure them to run the `aha-mcp-server` command with t
 
 Once configured, you can use natural language with your AI assistant to interact with Aha! data:
 
+- "Search for documents about product roadmap"
+- "Find all pages related to user authentication"
 - "Show me feature AHA-123"
-- "Get details for epic EPIC-456"
+- "Get details for epic EPIC-456" 
 - "What's in release REL-789?"
 - "Tell me about user john.doe"
 
 ### Tool Parameters
 
-Each tool requires a specific ID parameter:
+**Search Tool:**
+- `search_documents` requires:
+  - `query` (required): Search query string
+  - `searchable_type` (optional): Document type to search (defaults to "Page")
 
+**Get Tools:**
+Each get tool requires a specific ID parameter:
 - `get_feature` requires `feature_id`
 - `get_epic` requires `epic_id`
 - `get_release` requires `release_id`
 - And so on...
 
-Example tool call:
+Example tool calls:
+```json
+{
+  "tool": "search_documents",
+  "parameters": {
+    "query": "product roadmap",
+    "searchable_type": "Page"
+  }
+}
+```
+
 ```json
 {
   "tool": "get_feature",
@@ -225,7 +243,7 @@ When updating the version, update it in both [`README.md`](README.md) and [`serv
 
 | Server | Tools | License | Language |
 |--------|-------|---------|-----------|
-| **This Server** | 12 | MIT | Go |
+| **This Server** | 13 | MIT | Go |
 | [Official Aha! MCP](https://support.aha.io/aha-develop/integrations/mcp-server/mcp-server-connection~7493691606168806509) | 3 | ISC | TypeScript |
 | [popand/aha-mcp](https://github.com/popand/aha-mcp) | 4 | ISC | TypeScript |
 | [Zapier MCP](https://zapier.com/mcp/aha) | 2 | SaaS | - |
