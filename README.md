@@ -54,7 +54,7 @@ All tools return JSON data including the requested object and HTTP status code.
 ### Install from Source
 
 ```bash
-go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.4.2
+go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.5.0
 ```
 
 ### Build from Source
