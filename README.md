@@ -6,74 +6,234 @@
 [![Docs][docs-godoc-svg]][docs-godoc-url]
 [![License][license-svg]][license-url]
 
-A Model Context Protocol server for [Aha!](https://www.aha.io/).
+A comprehensive Model Context Protocol (MCP) server for [Aha!](https://www.aha.io/) that enables AI assistants to interact with your Aha! workspace data. This server provides 12 tools to retrieve various Aha! objects, making it easy to integrate Aha! data into AI workflows.
 
-## Tools
+## What is MCP?
 
-1. [ ] Comments
-    - [x] `get_comment`: Get a specific comment
-1. [ ] Epics
-    - [x] `get_epic`: Get a specific epic
-1. [ ] Features
-    - [x] `get_feature`: Get a specific feature
-1. [ ] Goals
-    - [x] `get_goal`: Get a specific goal
-1. [ ] Ideas
-    - [x] `get_idea`: Get a specific idea
-1. [ ] Initiatives
-    - [x] `get_initiative`: Get a specific initiative
-1. [ ] Key Results
-    - [x] `get_key_result`: Get a specific key result
-1. [ ] Personas
-    - [x] `get_persona`: Get a specific persona
-1. [ ] Releases
-    - [x] `get_release`: Get a specific release
-1. [ ] Requirements
-    - [x] `get_requirement`: Get a specific requirement
-1. [ ] Teams
-    - [x] `get_team`: Get a specific team
-1. [ ] Users
-    - [x] `get_user`: Get a specific user
-1. [ ] Workflows
-    - [x] `get_workflow`: Get a specific workflow
+The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard that enables AI assistants to securely connect to external data sources and tools. This Aha! MCP server acts as a bridge between AI assistants (like Claude) and your Aha! workspace.
+
+## Features
+
+- **12 comprehensive tools** for accessing Aha! objects
+- **Secure authentication** using Aha! API tokens
+- **Easy configuration** with environment variables
+- **Multiple deployment options** (stdio or HTTP)
+- **Built with Go** for performance and reliability
+- **MIT licensed** and open source
+
+## Available Tools
+
+This server provides the following tools to retrieve Aha! data:
+
+| Category | Tool | Description |
+|----------|------|-------------|
+| **Comments** | `get_comment` | Retrieve a specific comment by ID |
+| **Epics** | `get_epic` | Retrieve a specific epic by ID |
+| **Features** | `get_feature` | Retrieve a specific feature by ID |
+| **Goals** | `get_goal` | Retrieve a specific goal by ID |
+| **Ideas** | `get_idea` | Retrieve a specific idea by ID |
+| **Initiatives** | `get_initiative` | Retrieve a specific initiative by ID |
+| **Key Results** | `get_key_result` | Retrieve a specific key result by ID |
+| **Personas** | `get_persona` | Retrieve a specific persona by ID |
+| **Releases** | `get_release` | Retrieve a specific release by ID |
+| **Requirements** | `get_requirement` | Retrieve a specific requirement by ID |
+| **Teams** | `get_team` | Retrieve a specific team by ID |
+| **Users** | `get_user` | Retrieve a specific user by ID |
+| **Workflows** | `get_workflow` | Retrieve a specific workflow by ID |
+
+All tools return JSON data including the requested object and HTTP status code.
+
+## Prerequisites
+
+- Go 1.24.1 or later
+- An Aha! workspace with API access
+- An Aha! API token (see [Aha! API documentation](https://www.aha.io/api))
 
 ## Installation
 
+### Install from Source
+
+```bash
+go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.4.2
 ```
-% go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.4.2
+
+### Build from Source
+
+```bash
+git clone https://github.com/grokify/aha-mcp-server.git
+cd aha-mcp-server
+go build ./cmd/aha-mcp-server
 ```
 
 ## Configuration
 
-Configure with the following:
+### Get Your Aha! Credentials
+
+1. **API Token**: Generate an API token from your Aha! account settings
+2. **Domain**: Your Aha! subdomain (e.g., if your workspace is at `mycompany.aha.io`, your domain is `mycompany`)
+
+### Environment Variables
+
+Set the following environment variables:
+
+```bash
+export AHA_API_TOKEN="your_api_token_here"
+export AHA_DOMAIN="your_aha_subdomain"
+```
+
+### Claude Desktop Configuration
+
+Add this to your Claude Desktop configuration file:
+
+**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`  
+**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
 ```json
 {
-	"mcpServers": {
-		"aha": {
-			"command": "aha-mcp-server",
-			"env": {
-				"AHA_API_TOKEN": "<your_aha_token>",
-				"AHA_DOMAIN": "<your_aha_subdomain>"
-			}
-		}
-	}
+  "mcpServers": {
+    "aha": {
+      "command": "aha-mcp-server",
+      "env": {
+        "AHA_API_TOKEN": "your_api_token_here",
+        "AHA_DOMAIN": "your_aha_subdomain"
+      }
+    }
+  }
 }
 ```
+
+### Other MCP Clients
+
+For other MCP clients, configure them to run the `aha-mcp-server` command with the required environment variables.
+
+## Usage
+
+### Basic Usage
+
+Once configured, you can use natural language with your AI assistant to interact with Aha! data:
+
+- "Show me feature AHA-123"
+- "Get details for epic EPIC-456"
+- "What's in release REL-789?"
+- "Tell me about user john.doe"
+
+### Tool Parameters
+
+Each tool requires a specific ID parameter:
+
+- `get_feature` requires `feature_id`
+- `get_epic` requires `epic_id`
+- `get_release` requires `release_id`
+- And so on...
+
+Example tool call:
+```json
+{
+  "tool": "get_feature",
+  "parameters": {
+    "feature_id": "AHA-123"
+  }
+}
+```
+
+## Advanced Configuration
+
+### HTTP Mode
+
+You can run the server in HTTP mode for debugging or integration with other tools:
+
+```bash
+aha-mcp-server --http :8080
+```
+
+This will start an HTTP server on port 8080 instead of using stdio.
+
+### Command Line Options
+
+```bash
+aha-mcp-server [OPTIONS]
+
+Options:
+  -h, --http string    HTTP address (e.g., :8080) - if set, uses HTTP instead of stdio
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **"AHA_DOMAIN environment variable is required"**
+   - Make sure you've set the `AHA_DOMAIN` environment variable
+   - Verify it contains only your subdomain (e.g., `mycompany`, not `mycompany.aha.io`)
+
+2. **"AHA_API_TOKEN environment variable is required"**
+   - Ensure you've set a valid Aha! API token
+   - Check that the token has the necessary permissions
+
+3. **Connection errors**
+   - Verify your Aha! subdomain is correct
+   - Check that your API token is valid and not expired
+   - Ensure your network allows connections to `*.aha.io`
+
+### Debug Mode
+
+Run with debug logging by setting the environment variable:
+
+```bash
+export MCP_DEBUG=1
+```
+
+## Development
+
+### Project Structure
+
+```
+aha-mcp-server/
+├── cmd/aha-mcp-server/     # Main application entry point
+├── tools/                  # Tool implementations
+├── mcputil/               # MCP utility functions
+├── codegen/               # Code generation templates
+├── server.go              # Core server implementation
+└── go.mod                 # Go module definition
+```
+
+### Building
+
+```bash
+go build ./cmd/aha-mcp-server
+```
+
+### Testing
+
+```bash
+go test ./...
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
 ## Updating
 
 ### Version Number
 
-In preparation for updating the version number, update it in this ]`README.md`](README.md) and in [`server.go`](server.go).
+When updating the version, update it in both [`README.md`](README.md) and [`server.go`](server.go).
 
-## Other Aha! MCP Servers
+## Comparison with Other Aha! MCP Servers
 
-1. FOSS
-    1. [Official Aha! MCP Server](https://support.aha.io/aha-develop/integrations/mcp-server/mcp-server-connection~7493691606168806509) (3 tools)
-    1. [`github.com/popand/aha-mcp`](https://github.com/popand/aha-mcp) (4 tools)
-1. SaaS
-    1. [Zapier](https://zapier.com/mcp/aha) (2 tools)
+| Server | Tools | License | Language |
+|--------|-------|---------|-----------|
+| **This Server** | 12 | MIT | Go |
+| [Official Aha! MCP](https://support.aha.io/aha-develop/integrations/mcp-server/mcp-server-connection~7493691606168806509) | 3 | - | - |
+| [popand/aha-mcp](https://github.com/popand/aha-mcp) | 4 | - | - |
+| [Zapier MCP](https://zapier.com/mcp/aha) | 2 | SaaS | - |
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
  [build-status-svg]: https://github.com/grokify/aha-mcp-server/actions/workflows/ci.yaml/badge.svg?branch=main
