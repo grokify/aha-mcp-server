@@ -26,8 +26,8 @@ github.com/googleapis/enterprise-certificate-proxy v0.3.6 h1:GW/XbdyBFQ8Qe+YAmFU
 github.com/googleapis/enterprise-certificate-proxy v0.3.6/go.mod h1:MkHOF77EYAE7qfSuSS9PU6g4Nt4e11cnsDUowfwewLA=
 github.com/googleapis/gax-go/v2 v2.15.0 h1:SyjDc1mGgZU5LncH8gimWo9lW1DtIfPibOG81vgd/bo=
 github.com/googleapis/gax-go/v2 v2.15.0/go.mod h1:zVVkkxAQHa1RQpg9z2AUCMnKhi0Qld9rcmyfL1OZhoc=
-github.com/grokify/go-aha/v3 v3.2.2 h1:TONoDLXat47zqC6Sc8Dl0nWtWxD8mQFP61gtffHAQ9E=
-github.com/grokify/go-aha/v3 v3.2.2/go.mod h1:T1JlktVfkkgAX2YssXWt5nnO3UKuNMpBQxA3vev8vr0=
+github.com/grokify/go-aha/v3 v3.2.3 h1:5taQW18hVtsioEam6AiMLAatQSlnZw/Z6R4SqILYnoQ=
+github.com/grokify/go-aha/v3 v3.2.3/go.mod h1:p2B5Nu1Ju4t5POKpmbt6O5G+P3vY9CFKjURwzoXhB5U=
 github.com/grokify/goauth v0.23.19 h1:Athosv2ImaCAuQ6p7buQwfiUQ4wrC2nCsHD6VKT15q0=
 github.com/grokify/goauth v0.23.19/go.mod h1:b0FswfREL0qusNf984DREqpS7yhBU330S6bAgn31HTI=
 github.com/grokify/mogo v0.70.20 h1:v5P1IQv4kcGVZxFgedKOnLOLJXTpkMcCXxzHHBWcOFE=

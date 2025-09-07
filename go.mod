@@ -4,7 +4,7 @@ go 1.24.1
 
 require (
 	github.com/google/jsonschema-go v0.2.1-0.20250825175020-748c325cec76
-	github.com/grokify/go-aha/v3 v3.2.2
+	github.com/grokify/go-aha/v3 v3.2.3
 	github.com/grokify/mogo v0.70.20
 	github.com/jessevdk/go-flags v1.6.1
 	github.com/modelcontextprotocol/go-sdk v0.4.0
