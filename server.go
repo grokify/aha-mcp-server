@@ -71,7 +71,7 @@ func ListenAndServe(ctx context.Context, opts *Options) {
 		httpSvr := httputilmore.NewServerTimeouts(opts.HTTPAddr, handler, time.Second*5)
 		log.Fatal(httpSvr.ListenAndServe())
 	} else {
-		t := mcp.NewLoggingTransport(mcp.NewStdioTransport(), os.Stderr)
+		t := &mcp.LoggingTransport{Transport: &mcp.StdioTransport{}, Writer: os.Stderr}
 		if err := svr.Run(ctx, t); err != nil {
 			log.Printf("Server failed: %v", err)
 		}
