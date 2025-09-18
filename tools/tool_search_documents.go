@@ -26,8 +26,8 @@ type GraphQLRequest struct {
 }
 
 type GraphQLResponse struct {
-	Data   SearchData            `json:"data"`
-	Errors []GraphQLError        `json:"errors,omitempty"`
+	Data   SearchData     `json:"data"`
+	Errors []GraphQLError `json:"errors,omitempty"`
 }
 
 type GraphQLError struct {
@@ -108,7 +108,7 @@ func (tc *ToolsClient) SearchDocuments(ctx context.Context, req *mcp.CallToolReq
 		httpReq.Headers = make(http.Header)
 	}
 	httpReq.Headers.Set("Content-Type", "application/json")
-	
+
 	resp, err := tc.simpleClient.Do(ctx, httpReq)
 	if err != nil {
 		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error making GraphQL request: %v", err), true), nil, err
@@ -143,11 +143,11 @@ func (tc *ToolsClient) SearchDocuments(ctx context.Context, req *mcp.CallToolReq
 
 	// Format the response for MCP
 	searchResults := map[string]interface{}{
-		"results": make([]map[string]interface{}, len(graphqlResp.Data.Search.Nodes)),
+		"results":       make([]map[string]interface{}, len(graphqlResp.Data.Search.Nodes)),
 		"total_results": graphqlResp.Data.Search.TotalCount,
-		"current_page": graphqlResp.Data.Search.CurrentPage,
-		"total_pages": graphqlResp.Data.Search.TotalPages,
-		"is_last_page": graphqlResp.Data.Search.IsLastPage,
+		"current_page":  graphqlResp.Data.Search.CurrentPage,
+		"total_pages":   graphqlResp.Data.Search.TotalPages,
+		"is_last_page":  graphqlResp.Data.Search.IsLastPage,
 	}
 
 	// Transform nodes to the expected format
