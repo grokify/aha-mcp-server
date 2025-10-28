@@ -5,7 +5,7 @@ go 1.24.1
 require (
 	github.com/google/jsonschema-go v0.3.0
 	github.com/grokify/go-aha/v3 v3.2.3
-	github.com/grokify/mogo v0.71.3
+	github.com/grokify/mogo v0.71.7
 	github.com/jessevdk/go-flags v1.6.1
 	github.com/modelcontextprotocol/go-sdk v1.0.0
 	github.com/valyala/quicktemplate v1.8.0
@@ -37,7 +37,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.38.0 // indirect
 	go.opentelemetry.io/otel/trace v1.38.0 // indirect
 	golang.org/x/crypto v0.43.0 // indirect
-	golang.org/x/exp v0.0.0-20251009144603-d2f985daa21b // indirect
+	golang.org/x/exp v0.0.0-20251023183803-a4bb9ffd2546 // indirect
 	golang.org/x/net v0.46.0 // indirect
 	golang.org/x/oauth2 v0.31.0 // indirect
 	golang.org/x/sys v0.37.0 // indirect
