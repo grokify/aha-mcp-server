@@ -3,7 +3,7 @@ module github.com/grokify/aha-mcp-server
 go 1.24.1
 
 require (
-	github.com/google/jsonschema-go v0.3.0
+	github.com/google/jsonschema-go v0.4.0
 	github.com/grokify/go-aha/v3 v3.2.3
 	github.com/grokify/mogo v0.72.2
 	github.com/jessevdk/go-flags v1.6.1
