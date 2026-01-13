@@ -5,7 +5,7 @@ go 1.24.1
 require (
 	github.com/google/jsonschema-go v0.4.2
 	github.com/grokify/go-aha/v3 v3.2.3
-	github.com/grokify/mogo v0.72.3
+	github.com/grokify/mogo v0.72.6
 	github.com/jessevdk/go-flags v1.6.1
 	github.com/modelcontextprotocol/go-sdk v1.1.0
 	github.com/valyala/quicktemplate v1.8.0
@@ -41,8 +41,8 @@ require (
 	golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93 // indirect
 	golang.org/x/net v0.48.0 // indirect
 	golang.org/x/oauth2 v0.34.0 // indirect
-	golang.org/x/sys v0.39.0 // indirect
-	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/sys v0.40.0 // indirect
+	golang.org/x/text v0.33.0 // indirect
 	google.golang.org/api v0.258.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251213004720-97cd9d5aeac2 // indirect
 	google.golang.org/grpc v1.77.0 // indirect
