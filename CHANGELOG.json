@@ -1,0 +1,146 @@
+{
+  "ir_version": "1.0",
+  "project": "aha-mcp-server",
+  "repository": "https://github.com/grokify/aha-mcp-server",
+  "versioning": "semver",
+  "commit_convention": "conventional",
+  "maintainers": ["grokify", "johncwang@gmail.com"],
+  "releases": [
+    {
+      "version": "v0.6.0",
+      "date": "2026-02-02",
+      "highlights": [
+        { "description": "New `list_ideas` tool for searching and filtering Aha! ideas" }
+      ],
+      "added": [
+        { "description": "`list_ideas` tool with comprehensive filtering: search by name, workflow status, tags, user ID, date ranges, and sorting options", "commit": "dd5b78b" }
+      ],
+      "dependencies": [
+        { "description": "Upgrade `github.com/grokify/go-aha/v3` to v3.3.0 with ListIdeas API support", "commit": "4ccbf9a" },
+        { "description": "Bump `github.com/modelcontextprotocol/go-sdk` from 1.1.0 to 1.2.0", "commit": "f061567" },
+        { "description": "Bump `github.com/google/jsonschema-go` from 0.3.0 to 0.4.1", "commit": "36fc46a" },
+        { "description": "Bump `github.com/grokify/mogo` from 0.71.10 to 0.72.3", "commit": "d534344" }
+      ]
+    },
+    {
+      "version": "v0.5.3",
+      "date": "2025-11-30",
+      "dependencies": [
+        { "description": "Bump `github.com/modelcontextprotocol/go-sdk` from 0.5.0 to 1.1.0" },
+        { "description": "Bump `github.com/google/jsonschema-go` from 0.2.3 to 0.3.0" },
+        { "description": "Bump `github.com/grokify/mogo` from 0.70.23 to 0.71.10" },
+        { "description": "Bump `github/codeql-action` from 3 to 4" },
+        { "description": "Bump `golangci/golangci-lint-action` from 8 to 9" },
+        { "description": "Bump `actions/checkout` from 5 to 6" }
+      ]
+    },
+    {
+      "version": "v0.5.2",
+      "date": "2025-09-17",
+      "dependencies": [
+        { "description": "Bump `github.com/google/jsonschema-go` to 0.2.3" }
+      ]
+    },
+    {
+      "version": "v0.5.1",
+      "date": "2025-09-07",
+      "dependencies": [
+        { "description": "Bump `actions/setup-go` from 5 to 6" }
+      ]
+    },
+    {
+      "version": "v0.5.0",
+      "date": "2025-09-02",
+      "highlights": [
+        { "description": "New `search_documents` tool for searching Aha! documents" }
+      ],
+      "added": [
+        { "description": "`search_documents` tool for searching documents with query and pagination", "commit": "db2a9bd" }
+      ],
+      "security": [
+        { "description": "Add workflow permissions to CI and lint workflows to address CodeQL alerts", "commit": "e2c22e9" }
+      ]
+    },
+    {
+      "version": "v0.4.2",
+      "date": "2025-09-01",
+      "changed": [
+        { "description": "Add version number display in server info", "commit": "b388e87" }
+      ],
+      "documentation": [
+        { "description": "Add version number information to README", "commit": "b9acc3e" }
+      ]
+    },
+    {
+      "version": "v0.4.1",
+      "date": "2025-09-01",
+      "documentation": [
+        { "description": "Update README", "commit": "5253457" }
+      ]
+    },
+    {
+      "version": "v0.4.0",
+      "date": "2025-09-01",
+      "changed": [
+        { "description": "Update to use official MCP Go SDK v0.4.0", "commit": "063d9eb" }
+      ]
+    },
+    {
+      "version": "v0.3.2",
+      "date": "2025-08-31",
+      "added": [
+        { "description": "CodeQL SAST workflow for security scanning", "commit": "76f9251" }
+      ],
+      "documentation": [
+        { "description": "Add links to other MCP servers in README", "commit": "7c9a42e" }
+      ],
+      "dependencies": [
+        { "description": "Bump `github.com/grokify/mogo` from 0.70.16 to 0.70.19" },
+        { "description": "Bump `actions/checkout` from 4 to 5" }
+      ]
+    },
+    {
+      "version": "v0.3.1",
+      "date": "2025-08-04",
+      "documentation": [
+        { "description": "Auto-generate tools list in Markdown format for README", "commit": "73bf6c5" }
+      ]
+    },
+    {
+      "version": "v0.3.0",
+      "date": "2025-08-04",
+      "added": [
+        { "description": "Code generation for adding tools to `ToolsClient`", "commit": "599e7ac" }
+      ]
+    },
+    {
+      "version": "v0.2.0",
+      "date": "2025-08-04",
+      "highlights": [
+        { "description": "Expand tool coverage with 12 additional get tools for Aha! resources" }
+      ],
+      "added": [
+        { "description": "`get_comment`, `get_epic`, `get_goal`, `get_initiative`, `get_key_result`, `get_persona`, `get_release`, `get_requirement`, `get_team`, `get_user`, `get_workflow` tools", "commit": "14196fe" },
+        { "description": "Code generation for get tools using quicktemplate", "commit": "002e870" }
+      ],
+      "changed": [
+        { "description": "Move tools to dedicated `tools` directory", "commit": "f66cc41" }
+      ]
+    },
+    {
+      "version": "v0.1.0",
+      "date": "2025-07-22",
+      "highlights": [
+        { "description": "Initial release of Aha! MCP Server with core get_idea and get_feature tools" }
+      ],
+      "added": [
+        { "description": "MCP server implementation using `modelcontextprotocol/go-sdk`", "commit": "14da352" },
+        { "description": "`get_idea` tool for fetching Aha! ideas by ID", "commit": "14da352" },
+        { "description": "`get_feature` tool for fetching Aha! features by ID", "commit": "14da352" }
+      ],
+      "documentation": [
+        { "description": "README with installation and configuration instructions", "commit": "a475d80" }
+      ]
+    }
+  ]
+}
