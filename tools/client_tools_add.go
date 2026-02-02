@@ -4,6 +4,7 @@ import "github.com/modelcontextprotocol/go-sdk/mcp"
 
 func (tc *ToolsClient) AddTools(svr *mcp.Server) {
 	mcp.AddTool(svr, GetIdeaTool(), tc.GetIdea)
+	mcp.AddTool(svr, ListIdeasTool(), tc.ListIdeas)
 
 	mcp.AddTool(svr, GetCommentTool(), tc.GetComment)
 	mcp.AddTool(svr, GetEpicTool(), tc.GetEpic)
