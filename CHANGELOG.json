@@ -1,11 +1,46 @@
 {
-  "ir_version": "1.0",
+  "irVersion": "1.0",
   "project": "aha-mcp-server",
   "repository": "https://github.com/grokify/aha-mcp-server",
   "versioning": "semver",
-  "commit_convention": "conventional",
+  "commitConvention": "conventional",
   "maintainers": ["grokify", "johncwang@gmail.com"],
   "releases": [
+    {
+      "version": "v0.7.0",
+      "date": "2026-05-25",
+      "highlights": [
+        { "description": "Major CLI rewrite with Cobra, vault-backed credentials via omnitoken, and MkDocs documentation site" }
+      ],
+      "breaking": [
+        { "description": "CLI framework changed from go-flags to Cobra with new flag names", "commit": "5bbe6f8" }
+      ],
+      "added": [
+        { "description": "Vault-backed credentials via omnitoken (1Password, Bitwarden, Keeper)", "commit": "5bbe6f8" },
+        { "description": "CLI subcommands for all Aha! tools (get-idea, list-ideas, etc.)", "commit": "5bbe6f8" },
+        { "description": "Aha omniskill package for composable MCP servers", "commit": "c8862ac" },
+        { "description": "MkDocs documentation site with Material theme", "commit": "182a51b" }
+      ],
+      "fixed": [
+        { "description": "Resource leaks in API tools (missing `defer resp.Body.Close()`)", "commit": "1ba3b78" },
+        { "description": "JSON double-encoding bug in API responses", "commit": "1ba3b78" },
+        { "description": "Silent timestamp parsing failures now return clear errors", "commit": "1ba3b78" }
+      ],
+      "changed": [
+        { "description": "Refactor skills package to use generic resource tool helper", "commit": "7a5a0bc" }
+      ],
+      "dependencies": [
+        { "description": "Add `github.com/plexusone/omniskill` for skill framework", "commit": "39c6006" },
+        { "description": "Add `github.com/plexusone/omnitoken` for vault-backed credentials", "commit": "39c6006" },
+        { "description": "Add `github.com/spf13/cobra` for CLI framework", "commit": "39c6006" },
+        { "description": "Bump `github.com/modelcontextprotocol/go-sdk` from 1.4.0 to 1.6.1", "commit": "39c6006" },
+        { "description": "Bump `github.com/grokify/mogo` from 0.73.1 to 0.74.5", "commit": "39c6006" },
+        { "description": "Bump Go version from 1.25.0 to 1.26.0", "commit": "39c6006" }
+      ],
+      "documentation": [
+        { "description": "Update README with new CLI usage and vault configuration", "commit": "f1f45e6" }
+      ]
+    },
     {
       "version": "v0.6.0",
       "date": "2026-02-02",

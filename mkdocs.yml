@@ -1,6 +1,6 @@
 site_name: Aha! MCP Server
 site_description: MCP server for Aha! product management data
-site_url: https://grokify.github.io/mcp-aha
+site_url: https://grokify.github.io/aha-mcp-server
 repo_url: https://github.com/grokify/aha-mcp-server
 repo_name: grokify/aha-mcp-server
 
@@ -41,6 +41,9 @@ nav:
       - Credentials: configuration/credentials.md
       - Environment Variables: configuration/environment.md
       - Claude Desktop: configuration/claude-desktop.md
+  - Releases:
+      - v0.7.0: releases/v0.7.0.md
+      - v0.6.0: releases/v0.6.0.md
 
 markdown_extensions:
   - pymdownx.highlight:
