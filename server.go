@@ -53,9 +53,9 @@ func (opts *Options) CheckCredentials() error {
 func ListenAndServe(ctx context.Context, opts *Options) {
 	svr := mcp.NewServer(
 		&mcp.Implementation{
-			Name:    "aha-mcp-server",
-			Title:   "aha-mcp-server",
-			Version: "0.5.0"}, nil)
+			Name:    "mcp-aha",
+			Title:   "mcp-aha",
+			Version: "0.7.0"}, nil)
 
 	if toolsClient, err := tools.NewToolsClient(opts.AHASubdomain, opts.AHAAPIKey); err != nil {
 		log.Fatal(err)
