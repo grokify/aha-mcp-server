@@ -1,0 +1,65 @@
+site_name: Aha! MCP Server
+site_description: MCP server for Aha! product management data
+site_url: https://grokify.github.io/mcp-aha
+repo_url: https://github.com/grokify/aha-mcp-server
+repo_name: grokify/aha-mcp-server
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Setup: getting-started/setup.md
+      - Quick Start: getting-started/quickstart.md
+  - Tools Reference:
+      - Overview: tools/overview.md
+  - CLI:
+      - Commands: cli/commands.md
+  - Configuration:
+      - Credentials: configuration/credentials.md
+      - Environment Variables: configuration/environment.md
+      - Claude Desktop: configuration/claude-desktop.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/grokify/aha-mcp-server
