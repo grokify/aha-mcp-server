@@ -50,9 +50,8 @@ var (
 	listPerPage        int
 
 	// search-documents flags
-	searchQuery         string
 	searchSearchableType string
-	searchLimit         int
+	searchLimit          int
 )
 
 func main() {
