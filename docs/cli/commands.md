@@ -19,8 +19,8 @@ The Aha! MCP server can also be used as a command-line tool for testing and scri
 Start the MCP server (default when no command specified).
 
 ```bash
-mcp-aha serve
-mcp-aha  # Same as above
+aha-mcp-server serve
+aha-mcp-server  # Same as above
 ```
 
 ### version
@@ -28,7 +28,7 @@ mcp-aha  # Same as above
 Print version information.
 
 ```bash
-mcp-aha version
+aha-mcp-server version
 ```
 
 ## Aha! Commands
@@ -38,8 +38,8 @@ mcp-aha version
 Search for documents.
 
 ```bash
-mcp-aha search-documents "product roadmap"
-mcp-aha search-documents "auth" --type Page --limit 5
+aha-mcp-server search-documents "product roadmap"
+aha-mcp-server search-documents "auth" --type Page --limit 5
 ```
 
 | Flag | Description |
@@ -52,8 +52,8 @@ mcp-aha search-documents "auth" --type Page --limit 5
 Get an idea by ID.
 
 ```bash
-mcp-aha get-idea IDEA-123
-mcp-aha get-idea IDEA-123 --output pretty
+aha-mcp-server get-idea IDEA-123
+aha-mcp-server get-idea IDEA-123 --output pretty
 ```
 
 ### list-ideas
@@ -61,9 +61,9 @@ mcp-aha get-idea IDEA-123 --output pretty
 List ideas with filtering.
 
 ```bash
-mcp-aha list-ideas
-mcp-aha list-ideas --query "mobile" --workflow-status "Under consideration"
-mcp-aha list-ideas --tag "priority" --sort recent --per-page 20
+aha-mcp-server list-ideas
+aha-mcp-server list-ideas --query "mobile" --workflow-status "Under consideration"
+aha-mcp-server list-ideas --tag "priority" --sort recent --per-page 20
 ```
 
 | Flag | Description |
@@ -85,7 +85,7 @@ mcp-aha list-ideas --tag "priority" --sort recent --per-page 20
 Get a feature by ID.
 
 ```bash
-mcp-aha get-feature FEAT-123
+aha-mcp-server get-feature FEAT-123
 ```
 
 ### get-epic
@@ -93,7 +93,7 @@ mcp-aha get-feature FEAT-123
 Get an epic by ID.
 
 ```bash
-mcp-aha get-epic EPIC-456
+aha-mcp-server get-epic EPIC-456
 ```
 
 ### get-release
@@ -101,7 +101,7 @@ mcp-aha get-epic EPIC-456
 Get a release by ID.
 
 ```bash
-mcp-aha get-release REL-789
+aha-mcp-server get-release REL-789
 ```
 
 ### get-goal
@@ -109,7 +109,7 @@ mcp-aha get-release REL-789
 Get a goal by ID.
 
 ```bash
-mcp-aha get-goal GOAL-123
+aha-mcp-server get-goal GOAL-123
 ```
 
 ### get-initiative
@@ -117,7 +117,7 @@ mcp-aha get-goal GOAL-123
 Get an initiative by ID.
 
 ```bash
-mcp-aha get-initiative INIT-456
+aha-mcp-server get-initiative INIT-456
 ```
 
 ### get-key-result
@@ -125,7 +125,7 @@ mcp-aha get-initiative INIT-456
 Get a key result by ID.
 
 ```bash
-mcp-aha get-key-result KR-789
+aha-mcp-server get-key-result KR-789
 ```
 
 ### get-persona
@@ -133,7 +133,7 @@ mcp-aha get-key-result KR-789
 Get a persona by ID.
 
 ```bash
-mcp-aha get-persona PERS-123
+aha-mcp-server get-persona PERS-123
 ```
 
 ### get-requirement
@@ -141,7 +141,7 @@ mcp-aha get-persona PERS-123
 Get a requirement by ID.
 
 ```bash
-mcp-aha get-requirement REQ-456
+aha-mcp-server get-requirement REQ-456
 ```
 
 ### get-team
@@ -149,7 +149,7 @@ mcp-aha get-requirement REQ-456
 Get a team by ID.
 
 ```bash
-mcp-aha get-team TEAM-789
+aha-mcp-server get-team TEAM-789
 ```
 
 ### get-user
@@ -157,7 +157,7 @@ mcp-aha get-team TEAM-789
 Get a user by ID.
 
 ```bash
-mcp-aha get-user USER-123
+aha-mcp-server get-user USER-123
 ```
 
 ### get-workflow
@@ -165,7 +165,7 @@ mcp-aha get-user USER-123
 Get a workflow by ID.
 
 ```bash
-mcp-aha get-workflow WF-456
+aha-mcp-server get-workflow WF-456
 ```
 
 ### get-comment
@@ -173,7 +173,7 @@ mcp-aha get-workflow WF-456
 Get a comment by ID.
 
 ```bash
-mcp-aha get-comment COMMENT-789
+aha-mcp-server get-comment COMMENT-789
 ```
 
 ## Examples
@@ -182,13 +182,13 @@ mcp-aha get-comment COMMENT-789
 
 ```bash
 # Get feature and extract name with jq
-mcp-aha get-feature FEAT-123 | jq '.feature.name'
+aha-mcp-server get-feature FEAT-123 | jq '.feature.name'
 
 # List ideas and count them
-mcp-aha list-ideas --query "mobile" | jq '.ideas | length'
+aha-mcp-server list-ideas --query "mobile" | jq '.ideas | length'
 
 # Search and format results
-mcp-aha search-documents "roadmap" | jq -r '.results[].title'
+aha-mcp-server search-documents "roadmap" | jq -r '.results[].title'
 ```
 
 ### Using with Vault
@@ -196,10 +196,10 @@ mcp-aha search-documents "roadmap" | jq -r '.results[].title'
 ```bash
 # 1Password
 export OP_SERVICE_ACCOUNT_TOKEN="ops_..."
-mcp-aha get-feature FEAT-123 --vault op://MyVault --credentials-name aha
+aha-mcp-server get-feature FEAT-123 --vault op://MyVault --credentials-name aha
 
 # Bitwarden
 export BW_ACCESS_TOKEN="..."
 export BW_ORGANIZATION_ID="..."
-mcp-aha list-ideas --vault bw://org-id --credentials-name aha
+aha-mcp-server list-ideas --vault bw://org-id --credentials-name aha
 ```

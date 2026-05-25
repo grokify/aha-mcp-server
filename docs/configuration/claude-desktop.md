@@ -18,7 +18,7 @@ Configure Claude Desktop to use the Aha! MCP Server.
 {
   "mcpServers": {
     "aha": {
-      "command": "/path/to/mcp-aha",
+      "command": "/path/to/aha-mcp-server",
       "env": {
         "AHA_DOMAIN": "your_subdomain",
         "AHA_API_TOKEN": "your_api_token"
@@ -34,7 +34,7 @@ Configure Claude Desktop to use the Aha! MCP Server.
 {
   "mcpServers": {
     "aha": {
-      "command": "/path/to/mcp-aha",
+      "command": "/path/to/aha-mcp-server",
       "env": {
         "OP_SERVICE_ACCOUNT_TOKEN": "ops_...",
         "OMNITOKEN_VAULT_URI": "op://MyVault",
@@ -51,7 +51,7 @@ Configure Claude Desktop to use the Aha! MCP Server.
 {
   "mcpServers": {
     "aha": {
-      "command": "/path/to/mcp-aha",
+      "command": "/path/to/aha-mcp-server",
       "env": {
         "BW_ACCESS_TOKEN": "...",
         "BW_ORGANIZATION_ID": "...",
@@ -69,7 +69,7 @@ Configure Claude Desktop to use the Aha! MCP Server.
 {
   "mcpServers": {
     "aha": {
-      "command": "/path/to/mcp-aha",
+      "command": "/path/to/aha-mcp-server",
       "env": {
         "KSM_TOKEN": "US:...",
         "OMNITOKEN_VAULT_URI": "keeper://",
@@ -86,7 +86,7 @@ Configure Claude Desktop to use the Aha! MCP Server.
 {
   "mcpServers": {
     "aha": {
-      "command": "/path/to/mcp-aha",
+      "command": "/path/to/aha-mcp-server",
       "args": [
         "--vault", "file:///path/to/secrets",
         "--credentials-name", "aha"
@@ -117,7 +117,7 @@ You can run multiple MCP servers alongside Aha!:
 {
   "mcpServers": {
     "aha": {
-      "command": "/path/to/mcp-aha",
+      "command": "/path/to/aha-mcp-server",
       "env": {
         "AHA_DOMAIN": "mycompany",
         "AHA_API_TOKEN": "aha-token"
@@ -149,8 +149,8 @@ You can run multiple MCP servers alongside Aha!:
 # Find GOPATH
 go env GOPATH
 
-# Binary is at $GOPATH/bin/mcp-aha
-# Typically: ~/go/bin/mcp-aha
+# Binary is at $GOPATH/bin/aha-mcp-server
+# Typically: ~/go/bin/aha-mcp-server
 ```
 
 ### If built from source
@@ -158,7 +158,7 @@ go env GOPATH
 Use the full path to where you built it:
 
 ```bash
-/path/to/mcp-aha/mcp-aha
+/path/to/aha-mcp-server/aha-mcp-server
 ```
 
 ## Troubleshooting
@@ -182,7 +182,7 @@ Test the server manually:
 
 ```bash
 # Should start and wait for input (Ctrl+C to exit)
-/path/to/mcp-aha --subdomain mycompany --api-key your-key
+/path/to/aha-mcp-server --subdomain mycompany --api-key your-key
 ```
 
 ### JSON Syntax Errors

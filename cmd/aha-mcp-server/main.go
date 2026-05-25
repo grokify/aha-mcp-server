@@ -1,4 +1,4 @@
-// Command mcp-aha runs an Aha! MCP server that exposes tools for
+// Command aha-mcp-server runs an Aha! MCP server that exposes tools for
 // reading product management data from Aha!
 // It can also be used as a CLI tool for testing and scripting.
 package main
@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	serverName    = "mcp-aha"
+	serverName    = "aha-mcp-server"
 	serverVersion = "v0.7.0"
 )
 
@@ -61,7 +61,7 @@ func main() {
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "mcp-aha",
+	Use:   "aha-mcp-server",
 	Short: "MCP server and CLI for Aha!",
 	Long: `An MCP (Model Context Protocol) server for reading product management data from Aha!
 Can also be used as a CLI tool for testing and scripting.
@@ -72,16 +72,16 @@ Credentials can be provided via:
   - Direct credentials (subdomain and API key)
   - Vault-backed credentials via omnitoken`,
 	Example: `  # Start MCP server (default)
-  mcp-aha --subdomain mycompany --api-key your-api-key
+  aha-mcp-server --subdomain mycompany --api-key your-api-key
 
   # CLI: Get an idea
-  mcp-aha get-idea IDEA-123 --subdomain mycompany --api-key your-api-key
+  aha-mcp-server get-idea IDEA-123 --subdomain mycompany --api-key your-api-key
 
   # CLI: List ideas with search
-  mcp-aha list-ideas --query "authentication" --subdomain mycompany --api-key your-api-key
+  aha-mcp-server list-ideas --query "authentication" --subdomain mycompany --api-key your-api-key
 
   # CLI: Get a feature
-  mcp-aha get-feature FEAT-456 --subdomain mycompany --api-key your-api-key`,
+  aha-mcp-server get-feature FEAT-456 --subdomain mycompany --api-key your-api-key`,
 	SilenceUsage: true,
 	RunE:         runServer,
 }

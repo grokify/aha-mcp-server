@@ -38,17 +38,17 @@ The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standa
 
 ```bash
 # Install
-go install github.com/grokify/aha-mcp-server/cmd/mcp-aha@latest
+go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@latest
 
 # Configure credentials
 export AHA_DOMAIN="your_subdomain"
 export AHA_API_TOKEN="your_api_token"
 
 # Run as MCP server
-mcp-aha
+aha-mcp-server
 
 # Or use CLI mode
-mcp-aha get-idea IDEA-123
+aha-mcp-server get-idea IDEA-123
 ```
 
 ## Next Steps

@@ -27,7 +27,7 @@ export AHA_API_TOKEN="your_api_token"
 ### Option 2: Command-Line Flags
 
 ```bash
-mcp-aha --subdomain mycompany --api-key your-api-key
+aha-mcp-server --subdomain mycompany --api-key your-api-key
 ```
 
 ### Option 3: Vault-Backed Credentials
@@ -37,16 +37,16 @@ For production use, store credentials in a vault:
 ```bash
 # 1Password
 export OP_SERVICE_ACCOUNT_TOKEN="ops_..."
-mcp-aha --vault op://MyVault --credentials-name aha
+aha-mcp-server --vault op://MyVault --credentials-name aha
 
 # Bitwarden
 export BW_ACCESS_TOKEN="..."
 export BW_ORGANIZATION_ID="..."
-mcp-aha --vault bw://org-id --credentials-name aha
+aha-mcp-server --vault bw://org-id --credentials-name aha
 
 # Keeper
 export KSM_TOKEN="US:..."
-mcp-aha --vault keeper:// --credentials-name aha
+aha-mcp-server --vault keeper:// --credentials-name aha
 ```
 
 See [Credentials](../configuration/credentials.md) for detailed configuration options.
@@ -55,5 +55,5 @@ See [Credentials](../configuration/credentials.md) for detailed configuration op
 
 ```bash
 # Test with CLI mode
-mcp-aha search-documents "product roadmap" --subdomain mycompany --api-key your-key
+aha-mcp-server search-documents "product roadmap" --subdomain mycompany --api-key your-key
 ```

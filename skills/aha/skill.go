@@ -1,6 +1,6 @@
 // Package aha provides an omniskill Skill for reading Aha! product management data.
 //
-// This package can be used standalone with mcp-aha or composed
+// This package can be used standalone with aha-mcp-server or composed
 // with other skills in a multi-service MCP server.
 package aha
 

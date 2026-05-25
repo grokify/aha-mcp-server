@@ -15,7 +15,7 @@ The simplest option - provide your Aha! subdomain and API token directly.
 ### Usage
 
 ```bash
-mcp-aha --subdomain mycompany --api-key your-api-key
+aha-mcp-server --subdomain mycompany --api-key your-api-key
 ```
 
 Or with environment variables:
@@ -23,7 +23,7 @@ Or with environment variables:
 ```bash
 export AHA_DOMAIN=mycompany
 export AHA_API_TOKEN=your-api-key
-mcp-aha
+aha-mcp-server
 ```
 
 ## Option 2: Vault-Backed Credentials
@@ -45,7 +45,7 @@ Store your credentials in 1Password and access them securely:
 
 ```bash
 export OP_SERVICE_ACCOUNT_TOKEN="ops_..."
-mcp-aha --vault op://MyVault --credentials-name aha
+aha-mcp-server --vault op://MyVault --credentials-name aha
 ```
 
 The credential item should contain:
@@ -60,7 +60,7 @@ Store credentials in Bitwarden Secrets Manager:
 ```bash
 export BW_ACCESS_TOKEN="..."
 export BW_ORGANIZATION_ID="..."
-mcp-aha --vault bw://org-id --credentials-name aha
+aha-mcp-server --vault bw://org-id --credentials-name aha
 ```
 
 ### Keeper
@@ -69,7 +69,7 @@ Store credentials in Keeper Secrets Manager:
 
 ```bash
 export KSM_TOKEN="US:..."
-mcp-aha --vault keeper:// --credentials-name aha
+aha-mcp-server --vault keeper:// --credentials-name aha
 ```
 
 ### File Vault
@@ -77,7 +77,7 @@ mcp-aha --vault keeper:// --credentials-name aha
 For local development:
 
 ```bash
-mcp-aha --vault file:///path/to/secrets --credentials-name aha
+aha-mcp-server --vault file:///path/to/secrets --credentials-name aha
 ```
 
 Create a file at `/path/to/secrets/aha.json`:

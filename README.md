@@ -77,7 +77,7 @@ All tools return JSON data including the requested object and HTTP status code.
 ### Install from Source
 
 ```bash
-go install github.com/grokify/aha-mcp-server/cmd/mcp-aha@v0.7.0
+go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.7.0
 ```
 
 ### Build from Source
@@ -85,7 +85,7 @@ go install github.com/grokify/aha-mcp-server/cmd/mcp-aha@v0.7.0
 ```bash
 git clone https://github.com/grokify/aha-mcp-server.git
 cd aha-mcp-server
-go build ./cmd/mcp-aha
+go build ./cmd/aha-mcp-server
 ```
 
 ## Configuration
@@ -107,7 +107,7 @@ export AHA_DOMAIN="your_aha_subdomain"
 Or use command-line flags:
 
 ```bash
-mcp-aha --subdomain mycompany --api-key your-api-key
+aha-mcp-server --subdomain mycompany --api-key your-api-key
 ```
 
 ### Option 2: Vault-Backed Credentials
@@ -125,7 +125,7 @@ Use [omnitoken](https://github.com/plexusone/omnitoken) with vault backends for 
 
 ```bash
 export OP_SERVICE_ACCOUNT_TOKEN="ops_..."
-mcp-aha --vault op://MyVault --credentials-name aha
+aha-mcp-server --vault op://MyVault --credentials-name aha
 ```
 
 #### Bitwarden Example
@@ -133,14 +133,14 @@ mcp-aha --vault op://MyVault --credentials-name aha
 ```bash
 export BW_ACCESS_TOKEN="..."
 export BW_ORGANIZATION_ID="..."
-mcp-aha --vault bw://org-id --credentials-name aha
+aha-mcp-server --vault bw://org-id --credentials-name aha
 ```
 
 #### Keeper Example
 
 ```bash
 export KSM_TOKEN="US:..."
-mcp-aha --vault keeper:// --credentials-name aha
+aha-mcp-server --vault keeper:// --credentials-name aha
 ```
 
 ### Claude Desktop Configuration
@@ -156,7 +156,7 @@ Add to your Claude Desktop configuration file:
 {
   "mcpServers": {
     "aha": {
-      "command": "mcp-aha",
+      "command": "aha-mcp-server",
       "env": {
         "AHA_API_TOKEN": "your_api_token_here",
         "AHA_DOMAIN": "your_aha_subdomain"
@@ -172,7 +172,7 @@ Add to your Claude Desktop configuration file:
 {
   "mcpServers": {
     "aha": {
-      "command": "mcp-aha",
+      "command": "aha-mcp-server",
       "env": {
         "OP_SERVICE_ACCOUNT_TOKEN": "ops_...",
         "OMNITOKEN_VAULT_URI": "op://MyVault",
@@ -189,7 +189,7 @@ Add to your Claude Desktop configuration file:
 {
   "mcpServers": {
     "aha": {
-      "command": "mcp-aha",
+      "command": "aha-mcp-server",
       "env": {
         "BW_ACCESS_TOKEN": "...",
         "BW_ORGANIZATION_ID": "...",
@@ -207,7 +207,7 @@ Add to your Claude Desktop configuration file:
 {
   "mcpServers": {
     "aha": {
-      "command": "mcp-aha",
+      "command": "aha-mcp-server",
       "env": {
         "KSM_TOKEN": "US:...",
         "OMNITOKEN_VAULT_URI": "keeper://",
@@ -233,7 +233,7 @@ Add to your Claude Desktop configuration file:
 
 ### Other MCP Clients
 
-For other MCP clients, configure them to run the `mcp-aha` command with the required environment variables.
+For other MCP clients, configure them to run the `aha-mcp-server` command with the required environment variables.
 
 ## Usage
 
@@ -289,7 +289,7 @@ Example tool calls:
 You can run the server in HTTP mode for debugging or integration with other tools:
 
 ```bash
-mcp-aha --http :8080
+aha-mcp-server --http :8080
 ```
 
 This will start an HTTP server on port 8080 instead of using stdio.
@@ -297,7 +297,7 @@ This will start an HTTP server on port 8080 instead of using stdio.
 ### Command Line Options
 
 ```bash
-mcp-aha [OPTIONS]
+aha-mcp-server [OPTIONS]
 
 Options:
   -h, --http string    HTTP address (e.g., :8080) - if set, uses HTTP instead of stdio
@@ -333,8 +333,8 @@ export MCP_DEBUG=1
 ### Project Structure
 
 ```
-mcp-aha/
-├── cmd/mcp-aha/     # Main application entry point
+aha-mcp-server/
+├── cmd/aha-mcp-server/     # Main application entry point
 ├── tools/                  # Tool implementations
 ├── mcputil/               # MCP utility functions
 ├── codegen/               # Code generation templates
@@ -345,7 +345,7 @@ mcp-aha/
 ### Building
 
 ```bash
-go build ./cmd/mcp-aha
+go build ./cmd/aha-mcp-server
 ```
 
 ### Testing

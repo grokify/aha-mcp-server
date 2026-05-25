@@ -30,12 +30,12 @@ Command-line flags take precedence over environment variables.
 ```bash
 # Environment variable is used
 export AHA_DOMAIN=mycompany
-mcp-aha
+aha-mcp-server
 # Uses: mycompany
 
 # Flag overrides environment
 export AHA_DOMAIN=mycompany
-mcp-aha --subdomain othercompany
+aha-mcp-server --subdomain othercompany
 # Uses: othercompany
 ```
 
@@ -46,7 +46,7 @@ mcp-aha --subdomain othercompany
 ```bash
 export AHA_DOMAIN=mycompany
 export AHA_API_TOKEN=your-api-key
-mcp-aha
+aha-mcp-server
 ```
 
 ### 1Password
@@ -55,7 +55,7 @@ mcp-aha
 export OP_SERVICE_ACCOUNT_TOKEN="ops_..."
 export OMNITOKEN_VAULT_URI=op://MyVault
 export OMNITOKEN_CREDENTIALS_NAME=aha
-mcp-aha
+aha-mcp-server
 ```
 
 ### Bitwarden
@@ -65,7 +65,7 @@ export BW_ACCESS_TOKEN="..."
 export BW_ORGANIZATION_ID="..."
 export OMNITOKEN_VAULT_URI=bw://org-id
 export OMNITOKEN_CREDENTIALS_NAME=aha
-mcp-aha
+aha-mcp-server
 ```
 
 ### Keeper
@@ -74,7 +74,7 @@ mcp-aha
 export KSM_TOKEN="US:..."
 export OMNITOKEN_VAULT_URI=keeper://
 export OMNITOKEN_CREDENTIALS_NAME=aha
-mcp-aha
+aha-mcp-server
 ```
 
 ## Shell Configuration
@@ -112,7 +112,7 @@ Load with `source` or a dotenv tool:
 
 ```bash
 source .env
-mcp-aha
+aha-mcp-server
 ```
 
 Or use a tool like `direnv` for automatic loading.

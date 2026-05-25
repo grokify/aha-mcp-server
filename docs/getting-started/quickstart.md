@@ -13,7 +13,7 @@ Add to your Claude Desktop configuration file:
 {
   "mcpServers": {
     "aha": {
-      "command": "/path/to/mcp-aha",
+      "command": "/path/to/aha-mcp-server",
       "env": {
         "AHA_DOMAIN": "your_subdomain",
         "AHA_API_TOKEN": "your_api_token"
@@ -42,19 +42,19 @@ The server also works as a CLI tool for testing and scripting:
 
 ```bash
 # Search documents
-mcp-aha search-documents "authentication"
+aha-mcp-server search-documents "authentication"
 
 # Get a feature
-mcp-aha get-feature FEAT-123
+aha-mcp-server get-feature FEAT-123
 
 # List ideas with filtering
-mcp-aha list-ideas --query "mobile" --workflow-status "Under consideration"
+aha-mcp-server list-ideas --query "mobile" --workflow-status "Under consideration"
 
 # Get an epic
-mcp-aha get-epic EPIC-456
+aha-mcp-server get-epic EPIC-456
 
 # Pretty print output
-mcp-aha get-idea IDEA-789 --output pretty
+aha-mcp-server get-idea IDEA-789 --output pretty
 ```
 
 ## Example Workflows

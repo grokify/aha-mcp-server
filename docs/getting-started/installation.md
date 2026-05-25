@@ -9,7 +9,7 @@
 ## Install from Source
 
 ```bash
-go install github.com/grokify/aha-mcp-server/cmd/mcp-aha@latest
+go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@latest
 ```
 
 ## Build from Source
@@ -17,13 +17,13 @@ go install github.com/grokify/aha-mcp-server/cmd/mcp-aha@latest
 ```bash
 git clone https://github.com/grokify/aha-mcp-server.git
 cd aha-mcp-server
-go build ./cmd/mcp-aha
+go build ./cmd/aha-mcp-server
 ```
 
 ## Verify Installation
 
 ```bash
-mcp-aha version
+aha-mcp-server version
 ```
 
 ## Finding the Binary Path
@@ -34,8 +34,8 @@ mcp-aha version
 # Find GOPATH
 go env GOPATH
 
-# Binary is at $GOPATH/bin/mcp-aha
-# Typically: ~/go/bin/mcp-aha
+# Binary is at $GOPATH/bin/aha-mcp-server
+# Typically: ~/go/bin/aha-mcp-server
 ```
 
 ### If built from source
@@ -43,5 +43,5 @@ go env GOPATH
 Use the full path to where you built it:
 
 ```bash
-/path/to/mcp-aha/mcp-aha
+/path/to/aha-mcp-server/aha-mcp-server
 ```
