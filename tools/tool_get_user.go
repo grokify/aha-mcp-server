@@ -18,22 +18,43 @@ type GetUserParams struct {
 	UserID string `json:"user_id" description:"User ID to get"`
 }
 
+// GetUserResponse represents the structured response for getting a user
+type GetUserResponse struct {
+	User       interface{} `json:"user"`
+	StatusCode int         `json:"status_code"`
+}
+
 func (tc *ToolsClient) GetUser(ctx context.Context, req *mcp.CallToolRequest, params GetUserParams) (*mcp.CallToolResult, any, error) {
-	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
+	resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/users/%s", params.UserID),
-	}); err != nil {
+	})
+	if err != nil {
 		return mcputil.NewCallToolResultForAny(fmt.Sprintf("error getting User: %v", err), true), nil, err
-	} else if userJSON, err := io.ReadAll(resp.Body); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
-	} else if jsonData, err := json.MarshalIndent(map[string]any{
-		"user":        userJSON,
-		"status_code": resp.StatusCode,
-	}, "", "  "); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
-	} else {
-		return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 	}
+	defer resp.Body.Close()
+
+	userJSON, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error reading API response: %v", err), true), nil, err
+	}
+
+	var user interface{}
+	if err := json.Unmarshal(userJSON, &user); err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
+	}
+
+	response := GetUserResponse{
+		User:       user,
+		StatusCode: resp.StatusCode,
+	}
+
+	jsonData, err := json.MarshalIndent(response, "", "  ")
+	if err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
+	}
+
+	return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 }
 
 func GetUserTool() *mcp.Tool {

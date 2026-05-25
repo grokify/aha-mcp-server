@@ -18,22 +18,43 @@ type GetTeamParams struct {
 	TeamID string `json:"team_id" description:"Team ID to get"`
 }
 
+// GetTeamResponse represents the structured response for getting a team
+type GetTeamResponse struct {
+	Team       interface{} `json:"team"`
+	StatusCode int         `json:"status_code"`
+}
+
 func (tc *ToolsClient) GetTeam(ctx context.Context, req *mcp.CallToolRequest, params GetTeamParams) (*mcp.CallToolResult, any, error) {
-	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
+	resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/teams/%s", params.TeamID),
-	}); err != nil {
+	})
+	if err != nil {
 		return mcputil.NewCallToolResultForAny(fmt.Sprintf("error getting Team: %v", err), true), nil, err
-	} else if teamJSON, err := io.ReadAll(resp.Body); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
-	} else if jsonData, err := json.MarshalIndent(map[string]any{
-		"team":        teamJSON,
-		"status_code": resp.StatusCode,
-	}, "", "  "); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
-	} else {
-		return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 	}
+	defer resp.Body.Close()
+
+	teamJSON, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error reading API response: %v", err), true), nil, err
+	}
+
+	var team interface{}
+	if err := json.Unmarshal(teamJSON, &team); err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
+	}
+
+	response := GetTeamResponse{
+		Team:       team,
+		StatusCode: resp.StatusCode,
+	}
+
+	jsonData, err := json.MarshalIndent(response, "", "  ")
+	if err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
+	}
+
+	return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 }
 
 func GetTeamTool() *mcp.Tool {

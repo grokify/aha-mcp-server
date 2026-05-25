@@ -18,22 +18,43 @@ type GetWorkflowParams struct {
 	WorkflowID string `json:"workflow_id" description:"Workflow ID to get"`
 }
 
+// GetWorkflowResponse represents the structured response for getting a workflow
+type GetWorkflowResponse struct {
+	Workflow   interface{} `json:"workflow"`
+	StatusCode int         `json:"status_code"`
+}
+
 func (tc *ToolsClient) GetWorkflow(ctx context.Context, req *mcp.CallToolRequest, params GetWorkflowParams) (*mcp.CallToolResult, any, error) {
-	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
+	resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/workflows/%s", params.WorkflowID),
-	}); err != nil {
+	})
+	if err != nil {
 		return mcputil.NewCallToolResultForAny(fmt.Sprintf("error getting Workflow: %v", err), true), nil, err
-	} else if workflowJSON, err := io.ReadAll(resp.Body); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
-	} else if jsonData, err := json.MarshalIndent(map[string]any{
-		"workflow":    workflowJSON,
-		"status_code": resp.StatusCode,
-	}, "", "  "); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
-	} else {
-		return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 	}
+	defer resp.Body.Close()
+
+	workflowJSON, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error reading API response: %v", err), true), nil, err
+	}
+
+	var workflow interface{}
+	if err := json.Unmarshal(workflowJSON, &workflow); err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
+	}
+
+	response := GetWorkflowResponse{
+		Workflow:   workflow,
+		StatusCode: resp.StatusCode,
+	}
+
+	jsonData, err := json.MarshalIndent(response, "", "  ")
+	if err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
+	}
+
+	return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 }
 
 func GetWorkflowTool() *mcp.Tool {

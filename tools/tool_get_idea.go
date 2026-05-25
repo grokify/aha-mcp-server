@@ -15,6 +15,12 @@ type GetIdeaParams struct {
 	IdeaID string `json:"idea_id" description:"Idea ID to get"`
 }
 
+// GetIdeaResponse represents the structured response for getting an idea
+type GetIdeaResponse struct {
+	Idea       interface{} `json:"idea"`
+	StatusCode int         `json:"status_code"`
+}
+
 func (tc *ToolsClient) GetIdea(ctx context.Context, req *mcp.CallToolRequest, params GetIdeaParams) (*mcp.CallToolResult, any, error) {
 	idea, resp, err := tc.client.IdeasAPI.GetIdeaExecute(
 		tc.client.IdeasAPI.GetIdea(ctx, params.IdeaID))
@@ -23,16 +29,17 @@ func (tc *ToolsClient) GetIdea(ctx context.Context, req *mcp.CallToolRequest, pa
 		return result, nil, nil
 	}
 
-	if jsonData, err := json.MarshalIndent(map[string]any{
-		"idea":        idea,
-		"status_code": resp.StatusCode,
-	}, "", "  "); err != nil {
-		result := mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true)
-		return result, nil, nil
-	} else {
-		result := mcputil.NewCallToolResultForAny(string(jsonData), false)
-		return result, string(jsonData), nil
+	response := GetIdeaResponse{
+		Idea:       idea,
+		StatusCode: resp.StatusCode,
 	}
+
+	jsonData, err := json.MarshalIndent(response, "", "  ")
+	if err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, nil
+	}
+
+	return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 }
 
 func GetIdeaTool() *mcp.Tool {

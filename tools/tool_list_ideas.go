@@ -27,35 +27,33 @@ type ListIdeasParams struct {
 	PerPage        *int32 `json:"per_page,omitempty" description:"Results per page"`
 }
 
+// ListIdeasResponse represents the structured response for listing ideas
+type ListIdeasResponse struct {
+	Ideas      interface{} `json:"ideas"`
+	StatusCode int         `json:"status_code"`
+}
+
+// parseTimestamp parses an RFC3339 timestamp string and returns a time.Time or an error
+func parseTimestamp(value, fieldName string) (time.Time, error) {
+	t, err := time.Parse(time.RFC3339, value)
+	if err != nil {
+		return time.Time{}, fmt.Errorf("invalid %s timestamp (expected RFC3339 format): %w", fieldName, err)
+	}
+	return t, nil
+}
+
 func (tc *ToolsClient) ListIdeas(ctx context.Context, req *mcp.CallToolRequest, params ListIdeasParams) (*mcp.CallToolResult, any, error) {
 	apiReq := tc.client.IdeasAPI.ListIdeas(ctx)
 
+	// Apply string parameters
 	if params.Q != "" {
 		apiReq = apiReq.Q(params.Q)
-	}
-	if params.Spam != nil {
-		apiReq = apiReq.Spam(*params.Spam)
 	}
 	if params.WorkflowStatus != "" {
 		apiReq = apiReq.WorkflowStatus(params.WorkflowStatus)
 	}
 	if params.Sort != "" {
 		apiReq = apiReq.Sort(params.Sort)
-	}
-	if params.CreatedBefore != "" {
-		if t, err := time.Parse(time.RFC3339, params.CreatedBefore); err == nil {
-			apiReq = apiReq.CreatedBefore(t)
-		}
-	}
-	if params.CreatedSince != "" {
-		if t, err := time.Parse(time.RFC3339, params.CreatedSince); err == nil {
-			apiReq = apiReq.CreatedSince(t)
-		}
-	}
-	if params.UpdatedSince != "" {
-		if t, err := time.Parse(time.RFC3339, params.UpdatedSince); err == nil {
-			apiReq = apiReq.UpdatedSince(t)
-		}
 	}
 	if params.Tag != "" {
 		apiReq = apiReq.Tag(params.Tag)
@@ -66,6 +64,34 @@ func (tc *ToolsClient) ListIdeas(ctx context.Context, req *mcp.CallToolRequest, 
 	if params.IdeaUserID != "" {
 		apiReq = apiReq.IdeaUserId(params.IdeaUserID)
 	}
+
+	// Apply and validate timestamp parameters
+	if params.CreatedBefore != "" {
+		t, err := parseTimestamp(params.CreatedBefore, "created_before")
+		if err != nil {
+			return mcputil.NewCallToolResultForAny(err.Error(), true), nil, nil
+		}
+		apiReq = apiReq.CreatedBefore(t)
+	}
+	if params.CreatedSince != "" {
+		t, err := parseTimestamp(params.CreatedSince, "created_since")
+		if err != nil {
+			return mcputil.NewCallToolResultForAny(err.Error(), true), nil, nil
+		}
+		apiReq = apiReq.CreatedSince(t)
+	}
+	if params.UpdatedSince != "" {
+		t, err := parseTimestamp(params.UpdatedSince, "updated_since")
+		if err != nil {
+			return mcputil.NewCallToolResultForAny(err.Error(), true), nil, nil
+		}
+		apiReq = apiReq.UpdatedSince(t)
+	}
+
+	// Apply pointer parameters
+	if params.Spam != nil {
+		apiReq = apiReq.Spam(*params.Spam)
+	}
 	if params.Page != nil {
 		apiReq = apiReq.Page(*params.Page)
 	}
@@ -73,80 +99,101 @@ func (tc *ToolsClient) ListIdeas(ctx context.Context, req *mcp.CallToolRequest, 
 		apiReq = apiReq.PerPage(*params.PerPage)
 	}
 
+	// Execute API request
 	ideas, resp, err := apiReq.Execute()
 	if err != nil {
-		result := mcputil.NewCallToolResultForAny(fmt.Sprintf("Error listing ideas: %v", err), true)
-		return result, nil, nil
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error listing ideas: %v", err), true), nil, nil
 	}
 
-	if jsonData, err := json.MarshalIndent(map[string]any{
-		"ideas":       ideas,
-		"status_code": resp.StatusCode,
-	}, "", "  "); err != nil {
-		result := mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true)
-		return result, nil, nil
-	} else {
-		result := mcputil.NewCallToolResultForAny(string(jsonData), false)
-		return result, string(jsonData), nil
+	// Create typed response
+	response := ListIdeasResponse{
+		Ideas:      ideas,
+		StatusCode: resp.StatusCode,
 	}
+
+	jsonData, err := json.MarshalIndent(response, "", "  ")
+	if err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, nil
+	}
+
+	return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 }
 
 func ListIdeasTool() *mcp.Tool {
 	return &mcp.Tool{
 		Name:        "list_ideas",
 		Description: "List ideas from Aha with optional filtering and pagination",
-		InputSchema: &jsonschema.Schema{
-			Type: "object",
-			Properties: map[string]*jsonschema.Schema{
-				"q": {
-					Type:        "string",
-					Description: "Search term to match against the idea name",
-				},
-				"spam": {
-					Type:        "boolean",
-					Description: "When true, shows ideas marked as spam",
-				},
-				"workflow_status": {
-					Type:        "string",
-					Description: "Filter by workflow status ID or name",
-				},
-				"sort": {
-					Type:        "string",
-					Description: "Sort by: recent, trending, or popular",
-					Enum:        []any{"recent", "trending", "popular"},
-				},
-				"created_before": {
-					Type:        "string",
-					Description: "UTC timestamp (ISO8601). Only ideas created before this time",
-				},
-				"created_since": {
-					Type:        "string",
-					Description: "UTC timestamp (ISO8601). Only ideas created after this time",
-				},
-				"updated_since": {
-					Type:        "string",
-					Description: "UTC timestamp (ISO8601). Only ideas updated after this time",
-				},
-				"tag": {
-					Type:        "string",
-					Description: "Filter by tag value",
-				},
-				"user_id": {
-					Type:        "string",
-					Description: "Filter by creator user ID",
-				},
-				"idea_user_id": {
-					Type:        "string",
-					Description: "Filter by idea user ID",
-				},
-				"page": {
-					Type:        "integer",
-					Description: "Page number",
-				},
-				"per_page": {
-					Type:        "integer",
-					Description: "Results per page",
-				},
+		InputSchema: buildListIdeasSchema(),
+	}
+}
+
+// buildListIdeasSchema constructs the JSON schema for the list_ideas tool.
+// This helper improves readability by separating schema construction from tool definition.
+func buildListIdeasSchema() *jsonschema.Schema {
+	const (
+		typeString  = "string"
+		typeBoolean = "boolean"
+		typeInteger = "integer"
+	)
+
+	return &jsonschema.Schema{
+		Type: "object",
+		Properties: map[string]*jsonschema.Schema{
+			// Search and filtering
+			"q": {
+				Type:        typeString,
+				Description: "Search term to match against the idea name",
+			},
+			"spam": {
+				Type:        typeBoolean,
+				Description: "When true, shows ideas marked as spam",
+			},
+			"workflow_status": {
+				Type:        typeString,
+				Description: "Filter by workflow status ID or name",
+			},
+			"sort": {
+				Type:        typeString,
+				Description: "Sort by: recent, trending, or popular",
+				Enum:        []any{"recent", "trending", "popular"},
+			},
+
+			// Timestamp filters
+			"created_before": {
+				Type:        typeString,
+				Description: "UTC timestamp (ISO8601). Only ideas created before this time",
+			},
+			"created_since": {
+				Type:        typeString,
+				Description: "UTC timestamp (ISO8601). Only ideas created after this time",
+			},
+			"updated_since": {
+				Type:        typeString,
+				Description: "UTC timestamp (ISO8601). Only ideas updated after this time",
+			},
+
+			// Additional filters
+			"tag": {
+				Type:        typeString,
+				Description: "Filter by tag value",
+			},
+			"user_id": {
+				Type:        typeString,
+				Description: "Filter by creator user ID",
+			},
+			"idea_user_id": {
+				Type:        typeString,
+				Description: "Filter by idea user ID",
+			},
+
+			// Pagination
+			"page": {
+				Type:        typeInteger,
+				Description: "Page number",
+			},
+			"per_page": {
+				Type:        typeInteger,
+				Description: "Results per page",
 			},
 		},
 	}

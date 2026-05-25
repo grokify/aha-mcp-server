@@ -18,22 +18,43 @@ type GetCommentParams struct {
 	CommentID string `json:"comment_id" description:"Comment ID to get"`
 }
 
+// GetCommentResponse represents the structured response for getting a comment
+type GetCommentResponse struct {
+	Comment    interface{} `json:"comment"`
+	StatusCode int         `json:"status_code"`
+}
+
 func (tc *ToolsClient) GetComment(ctx context.Context, req *mcp.CallToolRequest, params GetCommentParams) (*mcp.CallToolResult, any, error) {
-	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
+	resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/comments/%s", params.CommentID),
-	}); err != nil {
+	})
+	if err != nil {
 		return mcputil.NewCallToolResultForAny(fmt.Sprintf("error getting Comment: %v", err), true), nil, err
-	} else if commentJSON, err := io.ReadAll(resp.Body); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
-	} else if jsonData, err := json.MarshalIndent(map[string]any{
-		"comment":     commentJSON,
-		"status_code": resp.StatusCode,
-	}, "", "  "); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
-	} else {
-		return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 	}
+	defer resp.Body.Close()
+
+	commentJSON, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error reading API response: %v", err), true), nil, err
+	}
+
+	var comment interface{}
+	if err := json.Unmarshal(commentJSON, &comment); err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
+	}
+
+	response := GetCommentResponse{
+		Comment:    comment,
+		StatusCode: resp.StatusCode,
+	}
+
+	jsonData, err := json.MarshalIndent(response, "", "  ")
+	if err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
+	}
+
+	return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 }
 
 func GetCommentTool() *mcp.Tool {

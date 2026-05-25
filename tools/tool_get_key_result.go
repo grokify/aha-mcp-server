@@ -18,22 +18,43 @@ type GetKeyResultParams struct {
 	KeyResultID string `json:"key_result_id" description:"Key Result ID to get"`
 }
 
+// GetKeyResultResponse represents the structured response for getting a key result
+type GetKeyResultResponse struct {
+	KeyResult  interface{} `json:"key_result"`
+	StatusCode int         `json:"status_code"`
+}
+
 func (tc *ToolsClient) GetKeyResult(ctx context.Context, req *mcp.CallToolRequest, params GetKeyResultParams) (*mcp.CallToolResult, any, error) {
-	if resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
+	resp, err := tc.simpleClient.Do(ctx, httpsimple.Request{
 		Method: http.MethodGet,
 		URL:    fmt.Sprintf("/api/v1/key_results/%s", params.KeyResultID),
-	}); err != nil {
+	})
+	if err != nil {
 		return mcputil.NewCallToolResultForAny(fmt.Sprintf("error getting Key Result: %v", err), true), nil, err
-	} else if keyResultJSON, err := io.ReadAll(resp.Body); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
-	} else if jsonData, err := json.MarshalIndent(map[string]any{
-		"key_result":  keyResultJSON,
-		"status_code": resp.StatusCode,
-	}, "", "  "); err != nil {
-		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
-	} else {
-		return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 	}
+	defer resp.Body.Close()
+
+	keyResultJSON, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error reading API response: %v", err), true), nil, err
+	}
+
+	var keyResult interface{}
+	if err := json.Unmarshal(keyResultJSON, &keyResult); err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error unmarshaling API response: %v", err), true), nil, err
+	}
+
+	response := GetKeyResultResponse{
+		KeyResult:  keyResult,
+		StatusCode: resp.StatusCode,
+	}
+
+	jsonData, err := json.MarshalIndent(response, "", "  ")
+	if err != nil {
+		return mcputil.NewCallToolResultForAny(fmt.Sprintf("Error marshaling response: %v", err), true), nil, err
+	}
+
+	return mcputil.NewCallToolResultForAny(string(jsonData), false), string(jsonData), nil
 }
 
 func GetKeyResultTool() *mcp.Tool {
