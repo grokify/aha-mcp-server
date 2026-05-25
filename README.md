@@ -1,9 +1,32 @@
 # Aha! MCP Server
 
-[![Build Status][build-status-svg]][build-status-url]
+[![Go CI][go-ci-svg]][go-ci-url]
+[![Go Lint][go-lint-svg]][go-lint-url]
+[![Go SAST][go-sast-svg]][go-sast-url]
 [![Go Report Card][goreport-svg]][goreport-url]
 [![Docs][docs-godoc-svg]][docs-godoc-url]
+[![Docs][docs-mkdoc-svg]][docs-mkdoc-url]
+[![Visualization][viz-svg]][viz-url]
 [![License][license-svg]][license-url]
+
+ [go-ci-svg]: https://github.com/grokify/aha-mcp-server/actions/workflows/go-ci.yaml/badge.svg?branch=main
+ [go-ci-url]: https://github.com/grokify/aha-mcp-server/actions/workflows/go-ci.yaml
+ [go-lint-svg]: https://github.com/grokify/aha-mcp-server/actions/workflows/go-lint.yaml/badge.svg?branch=main
+ [go-lint-url]: https://github.com/grokify/aha-mcp-server/actions/workflows/go-lint.yaml
+ [go-sast-svg]: https://github.com/grokify/aha-mcp-server/actions/workflows/go-sast-codeql.yaml/badge.svg?branch=main
+ [go-sast-url]: https://github.com/grokify/aha-mcp-server/actions/workflows/go-sast-codeql.yaml
+ [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/aha-mcp-server
+ [goreport-url]: https://goreportcard.com/report/github.com/grokify/aha-mcp-server
+ [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/grokify/aha-mcp-server
+ [docs-godoc-url]: https://pkg.go.dev/github.com/grokify/aha-mcp-server
+ [docs-mkdoc-svg]: https://img.shields.io/badge/Go-dev%20guide-blue.svg
+ [docs-mkdoc-url]: https://grokify.github.io/aha-mcp-server
+ [viz-svg]: https://img.shields.io/badge/visualization-Go-blue.svg
+ [viz-url]: https://mango-dune-07a8b7110.1.azurestaticapps.net/?repo=grokify%2Faha-mcp-server
+ [loc-svg]: https://tokei.rs/b1/github/grokify/aha-mcp-server
+ [repo-url]: https://github.com/grokify/aha-mcp-server
+ [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
+ [license-url]: https://github.com/grokify/aha-mcp-server/blob/main/LICENSE
 
 A comprehensive Model Context Protocol (MCP) server for [Aha!](https://www.aha.io/) that enables AI assistants to interact with your Aha! workspace data. This server provides 13 tools to retrieve and search various Aha! objects, making it easy to integrate Aha! data into AI workflows.
 
@@ -357,19 +380,3 @@ When updating the version, update it in both [`README.md`](README.md) and [`serv
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-
- [build-status-svg]: https://github.com/grokify/aha-mcp-server/actions/workflows/ci.yaml/badge.svg?branch=main
- [build-status-url]: https://github.com/grokify/aha-mcp-server/actions/workflows/ci.yaml
- [lint-status-svg]: https://github.com/grokify/aha-mcp-server/actions/workflows/lint.yaml/badge.svg?branch=main
- [lint-status-url]: https://github.com/grokify/aha-mcp-server/actions/workflows/lint.yaml
- [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/aha-mcp-server
- [goreport-url]: https://goreportcard.com/report/github.com/grokify/aha-mcp-server
- [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/grokify/aha-mcp-server
- [docs-godoc-url]: https://pkg.go.dev/github.com/grokify/aha-mcp-server
- [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
- [license-url]: https://github.com/grokify/aha-mcp-server/blob/main/LICENSE
- [used-by-svg]: https://sourcegraph.com/github.com/grokify/aha-mcp-server/-/badge.svg
- [used-by-url]: https://sourcegraph.com/github.com/grokify/aha-mcp-server?badge
- [loc-svg]: https://tokei.rs/b1/github/grokify/mcp-aha
- [repo-url]: https://github.com/grokify/aha-mcp-server
