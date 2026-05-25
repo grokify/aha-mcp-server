@@ -87,6 +87,62 @@ func (s *Skill) Tools() []skill.Tool {
 // Ensure Skill implements skill.Skill.
 var _ skill.Skill = (*Skill)(nil)
 
+// resourceConfig defines parameters for a generic GET resource tool.
+type resourceConfig struct {
+	name     string // e.g., "comment"
+	title    string // e.g., "Comment"
+	endpoint string // e.g., "comments"
+}
+
+// getResourceTool creates a generic tool for fetching a single resource by ID.
+func (s *Skill) getResourceTool(cfg resourceConfig) skill.Tool {
+	paramName := cfg.name + "_id"
+	return skill.NewTool(
+		"get_"+cfg.name,
+		"Get "+cfg.title+" from Aha",
+		map[string]skill.Parameter{
+			paramName: {
+				Type:        "string",
+				Description: cfg.title + " ID to get",
+				Required:    true,
+			},
+		},
+		func(ctx context.Context, params map[string]any) (any, error) {
+			id, _ := params[paramName].(string)
+			if id == "" {
+				return nil, fmt.Errorf("%s is required", paramName)
+			}
+
+			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
+				Method: http.MethodGet,
+				URL:    fmt.Sprintf("/api/v1/%s/%s", cfg.endpoint, id),
+			})
+			if err != nil {
+				return map[string]any{"error": fmt.Sprintf("error getting %s: %v", cfg.title, err)}, nil
+			}
+			defer resp.Body.Close()
+
+			body, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
+			}
+
+			var result any
+			if err := json.Unmarshal(body, &result); err != nil {
+				return map[string]any{
+					cfg.name:      string(body),
+					"status_code": resp.StatusCode,
+				}, nil
+			}
+
+			return map[string]any{
+				cfg.name:      result,
+				"status_code": resp.StatusCode,
+			}, nil
+		},
+	)
+}
+
 func (s *Skill) getIdeaTool() skill.Tool {
 	return skill.NewTool(
 		"get_idea",
@@ -248,567 +304,51 @@ func (s *Skill) listIdeasTool() skill.Tool {
 }
 
 func (s *Skill) getCommentTool() skill.Tool {
-	return skill.NewTool(
-		"get_comment",
-		"Get Comment from Aha",
-		map[string]skill.Parameter{
-			"comment_id": {
-				Type:        "string",
-				Description: "Comment ID to get",
-				Required:    true,
-			},
-		},
-		func(ctx context.Context, params map[string]any) (any, error) {
-			commentID, _ := params["comment_id"].(string)
-			if commentID == "" {
-				return nil, fmt.Errorf("comment_id is required")
-			}
-
-			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
-				Method: http.MethodGet,
-				URL:    fmt.Sprintf("/api/v1/comments/%s", commentID),
-			})
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error getting Comment: %v", err)}, nil
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
-			}
-
-			var comment any
-			if err := json.Unmarshal(body, &comment); err != nil {
-				return map[string]any{
-					"comment":     string(body),
-					"status_code": resp.StatusCode,
-				}, nil
-			}
-
-			return map[string]any{
-				"comment":     comment,
-				"status_code": resp.StatusCode,
-			}, nil
-		},
-	)
+	return s.getResourceTool(resourceConfig{name: "comment", title: "Comment", endpoint: "comments"})
 }
 
 func (s *Skill) getEpicTool() skill.Tool {
-	return skill.NewTool(
-		"get_epic",
-		"Get Epic from Aha",
-		map[string]skill.Parameter{
-			"epic_id": {
-				Type:        "string",
-				Description: "Epic ID to get",
-				Required:    true,
-			},
-		},
-		func(ctx context.Context, params map[string]any) (any, error) {
-			epicID, _ := params["epic_id"].(string)
-			if epicID == "" {
-				return nil, fmt.Errorf("epic_id is required")
-			}
-
-			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
-				Method: http.MethodGet,
-				URL:    fmt.Sprintf("/api/v1/epics/%s", epicID),
-			})
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error getting Epic: %v", err)}, nil
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
-			}
-
-			var epic any
-			if err := json.Unmarshal(body, &epic); err != nil {
-				return map[string]any{
-					"epic":        string(body),
-					"status_code": resp.StatusCode,
-				}, nil
-			}
-
-			return map[string]any{
-				"epic":        epic,
-				"status_code": resp.StatusCode,
-			}, nil
-		},
-	)
+	return s.getResourceTool(resourceConfig{name: "epic", title: "Epic", endpoint: "epics"})
 }
 
 func (s *Skill) getFeatureTool() skill.Tool {
-	return skill.NewTool(
-		"get_feature",
-		"Get Feature from Aha",
-		map[string]skill.Parameter{
-			"feature_id": {
-				Type:        "string",
-				Description: "Feature ID to get",
-				Required:    true,
-			},
-		},
-		func(ctx context.Context, params map[string]any) (any, error) {
-			featureID, _ := params["feature_id"].(string)
-			if featureID == "" {
-				return nil, fmt.Errorf("feature_id is required")
-			}
-
-			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
-				Method: http.MethodGet,
-				URL:    fmt.Sprintf("/api/v1/features/%s", featureID),
-			})
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error getting Feature: %v", err)}, nil
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
-			}
-
-			var feature any
-			if err := json.Unmarshal(body, &feature); err != nil {
-				return map[string]any{
-					"feature":     string(body),
-					"status_code": resp.StatusCode,
-				}, nil
-			}
-
-			return map[string]any{
-				"feature":     feature,
-				"status_code": resp.StatusCode,
-			}, nil
-		},
-	)
+	return s.getResourceTool(resourceConfig{name: "feature", title: "Feature", endpoint: "features"})
 }
 
 func (s *Skill) getGoalTool() skill.Tool {
-	return skill.NewTool(
-		"get_goal",
-		"Get Goal from Aha",
-		map[string]skill.Parameter{
-			"goal_id": {
-				Type:        "string",
-				Description: "Goal ID to get",
-				Required:    true,
-			},
-		},
-		func(ctx context.Context, params map[string]any) (any, error) {
-			goalID, _ := params["goal_id"].(string)
-			if goalID == "" {
-				return nil, fmt.Errorf("goal_id is required")
-			}
-
-			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
-				Method: http.MethodGet,
-				URL:    fmt.Sprintf("/api/v1/goals/%s", goalID),
-			})
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error getting Goal: %v", err)}, nil
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
-			}
-
-			var goal any
-			if err := json.Unmarshal(body, &goal); err != nil {
-				return map[string]any{
-					"goal":        string(body),
-					"status_code": resp.StatusCode,
-				}, nil
-			}
-
-			return map[string]any{
-				"goal":        goal,
-				"status_code": resp.StatusCode,
-			}, nil
-		},
-	)
+	return s.getResourceTool(resourceConfig{name: "goal", title: "Goal", endpoint: "goals"})
 }
 
 func (s *Skill) getInitiativeTool() skill.Tool {
-	return skill.NewTool(
-		"get_initiative",
-		"Get Initiative from Aha",
-		map[string]skill.Parameter{
-			"initiative_id": {
-				Type:        "string",
-				Description: "Initiative ID to get",
-				Required:    true,
-			},
-		},
-		func(ctx context.Context, params map[string]any) (any, error) {
-			initiativeID, _ := params["initiative_id"].(string)
-			if initiativeID == "" {
-				return nil, fmt.Errorf("initiative_id is required")
-			}
-
-			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
-				Method: http.MethodGet,
-				URL:    fmt.Sprintf("/api/v1/initiatives/%s", initiativeID),
-			})
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error getting Initiative: %v", err)}, nil
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
-			}
-
-			var initiative any
-			if err := json.Unmarshal(body, &initiative); err != nil {
-				return map[string]any{
-					"initiative":  string(body),
-					"status_code": resp.StatusCode,
-				}, nil
-			}
-
-			return map[string]any{
-				"initiative":  initiative,
-				"status_code": resp.StatusCode,
-			}, nil
-		},
-	)
+	return s.getResourceTool(resourceConfig{name: "initiative", title: "Initiative", endpoint: "initiatives"})
 }
 
 func (s *Skill) getKeyResultTool() skill.Tool {
-	return skill.NewTool(
-		"get_key_result",
-		"Get Key Result from Aha",
-		map[string]skill.Parameter{
-			"key_result_id": {
-				Type:        "string",
-				Description: "Key Result ID to get",
-				Required:    true,
-			},
-		},
-		func(ctx context.Context, params map[string]any) (any, error) {
-			keyResultID, _ := params["key_result_id"].(string)
-			if keyResultID == "" {
-				return nil, fmt.Errorf("key_result_id is required")
-			}
-
-			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
-				Method: http.MethodGet,
-				URL:    fmt.Sprintf("/api/v1/key_results/%s", keyResultID),
-			})
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error getting Key Result: %v", err)}, nil
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
-			}
-
-			var keyResult any
-			if err := json.Unmarshal(body, &keyResult); err != nil {
-				return map[string]any{
-					"key_result":  string(body),
-					"status_code": resp.StatusCode,
-				}, nil
-			}
-
-			return map[string]any{
-				"key_result":  keyResult,
-				"status_code": resp.StatusCode,
-			}, nil
-		},
-	)
+	return s.getResourceTool(resourceConfig{name: "key_result", title: "Key Result", endpoint: "key_results"})
 }
 
 func (s *Skill) getPersonaTool() skill.Tool {
-	return skill.NewTool(
-		"get_persona",
-		"Get Persona from Aha",
-		map[string]skill.Parameter{
-			"persona_id": {
-				Type:        "string",
-				Description: "Persona ID to get",
-				Required:    true,
-			},
-		},
-		func(ctx context.Context, params map[string]any) (any, error) {
-			personaID, _ := params["persona_id"].(string)
-			if personaID == "" {
-				return nil, fmt.Errorf("persona_id is required")
-			}
-
-			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
-				Method: http.MethodGet,
-				URL:    fmt.Sprintf("/api/v1/personas/%s", personaID),
-			})
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error getting Persona: %v", err)}, nil
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
-			}
-
-			var persona any
-			if err := json.Unmarshal(body, &persona); err != nil {
-				return map[string]any{
-					"persona":     string(body),
-					"status_code": resp.StatusCode,
-				}, nil
-			}
-
-			return map[string]any{
-				"persona":     persona,
-				"status_code": resp.StatusCode,
-			}, nil
-		},
-	)
+	return s.getResourceTool(resourceConfig{name: "persona", title: "Persona", endpoint: "personas"})
 }
 
 func (s *Skill) getReleaseTool() skill.Tool {
-	return skill.NewTool(
-		"get_release",
-		"Get Release from Aha",
-		map[string]skill.Parameter{
-			"release_id": {
-				Type:        "string",
-				Description: "Release ID to get",
-				Required:    true,
-			},
-		},
-		func(ctx context.Context, params map[string]any) (any, error) {
-			releaseID, _ := params["release_id"].(string)
-			if releaseID == "" {
-				return nil, fmt.Errorf("release_id is required")
-			}
-
-			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
-				Method: http.MethodGet,
-				URL:    fmt.Sprintf("/api/v1/releases/%s", releaseID),
-			})
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error getting Release: %v", err)}, nil
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
-			}
-
-			var release any
-			if err := json.Unmarshal(body, &release); err != nil {
-				return map[string]any{
-					"release":     string(body),
-					"status_code": resp.StatusCode,
-				}, nil
-			}
-
-			return map[string]any{
-				"release":     release,
-				"status_code": resp.StatusCode,
-			}, nil
-		},
-	)
+	return s.getResourceTool(resourceConfig{name: "release", title: "Release", endpoint: "releases"})
 }
 
 func (s *Skill) getRequirementTool() skill.Tool {
-	return skill.NewTool(
-		"get_requirement",
-		"Get Requirement from Aha",
-		map[string]skill.Parameter{
-			"requirement_id": {
-				Type:        "string",
-				Description: "Requirement ID to get",
-				Required:    true,
-			},
-		},
-		func(ctx context.Context, params map[string]any) (any, error) {
-			requirementID, _ := params["requirement_id"].(string)
-			if requirementID == "" {
-				return nil, fmt.Errorf("requirement_id is required")
-			}
-
-			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
-				Method: http.MethodGet,
-				URL:    fmt.Sprintf("/api/v1/requirements/%s", requirementID),
-			})
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error getting Requirement: %v", err)}, nil
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
-			}
-
-			var requirement any
-			if err := json.Unmarshal(body, &requirement); err != nil {
-				return map[string]any{
-					"requirement": string(body),
-					"status_code": resp.StatusCode,
-				}, nil
-			}
-
-			return map[string]any{
-				"requirement": requirement,
-				"status_code": resp.StatusCode,
-			}, nil
-		},
-	)
+	return s.getResourceTool(resourceConfig{name: "requirement", title: "Requirement", endpoint: "requirements"})
 }
 
 func (s *Skill) getTeamTool() skill.Tool {
-	return skill.NewTool(
-		"get_team",
-		"Get Team from Aha",
-		map[string]skill.Parameter{
-			"team_id": {
-				Type:        "string",
-				Description: "Team ID to get",
-				Required:    true,
-			},
-		},
-		func(ctx context.Context, params map[string]any) (any, error) {
-			teamID, _ := params["team_id"].(string)
-			if teamID == "" {
-				return nil, fmt.Errorf("team_id is required")
-			}
-
-			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
-				Method: http.MethodGet,
-				URL:    fmt.Sprintf("/api/v1/teams/%s", teamID),
-			})
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error getting Team: %v", err)}, nil
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
-			}
-
-			var team any
-			if err := json.Unmarshal(body, &team); err != nil {
-				return map[string]any{
-					"team":        string(body),
-					"status_code": resp.StatusCode,
-				}, nil
-			}
-
-			return map[string]any{
-				"team":        team,
-				"status_code": resp.StatusCode,
-			}, nil
-		},
-	)
+	return s.getResourceTool(resourceConfig{name: "team", title: "Team", endpoint: "teams"})
 }
 
 func (s *Skill) getUserTool() skill.Tool {
-	return skill.NewTool(
-		"get_user",
-		"Get User from Aha",
-		map[string]skill.Parameter{
-			"user_id": {
-				Type:        "string",
-				Description: "User ID to get",
-				Required:    true,
-			},
-		},
-		func(ctx context.Context, params map[string]any) (any, error) {
-			userID, _ := params["user_id"].(string)
-			if userID == "" {
-				return nil, fmt.Errorf("user_id is required")
-			}
-
-			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
-				Method: http.MethodGet,
-				URL:    fmt.Sprintf("/api/v1/users/%s", userID),
-			})
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error getting User: %v", err)}, nil
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
-			}
-
-			var user any
-			if err := json.Unmarshal(body, &user); err != nil {
-				return map[string]any{
-					"user":        string(body),
-					"status_code": resp.StatusCode,
-				}, nil
-			}
-
-			return map[string]any{
-				"user":        user,
-				"status_code": resp.StatusCode,
-			}, nil
-		},
-	)
+	return s.getResourceTool(resourceConfig{name: "user", title: "User", endpoint: "users"})
 }
 
 func (s *Skill) getWorkflowTool() skill.Tool {
-	return skill.NewTool(
-		"get_workflow",
-		"Get Workflow from Aha",
-		map[string]skill.Parameter{
-			"workflow_id": {
-				Type:        "string",
-				Description: "Workflow ID to get",
-				Required:    true,
-			},
-		},
-		func(ctx context.Context, params map[string]any) (any, error) {
-			workflowID, _ := params["workflow_id"].(string)
-			if workflowID == "" {
-				return nil, fmt.Errorf("workflow_id is required")
-			}
-
-			resp, err := s.simpleClient.Do(ctx, httpsimple.Request{
-				Method: http.MethodGet,
-				URL:    fmt.Sprintf("/api/v1/workflows/%s", workflowID),
-			})
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error getting Workflow: %v", err)}, nil
-			}
-			defer resp.Body.Close()
-
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return map[string]any{"error": fmt.Sprintf("error reading response: %v", err)}, nil
-			}
-
-			var workflow any
-			if err := json.Unmarshal(body, &workflow); err != nil {
-				return map[string]any{
-					"workflow":    string(body),
-					"status_code": resp.StatusCode,
-				}, nil
-			}
-
-			return map[string]any{
-				"workflow":    workflow,
-				"status_code": resp.StatusCode,
-			}, nil
-		},
-	)
+	return s.getResourceTool(resourceConfig{name: "workflow", title: "Workflow", endpoint: "workflows"})
 }
 
 // GraphQL types for search
