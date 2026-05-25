@@ -1,4 +1,4 @@
-package tools
+package tools //nolint:dupl
 
 import (
 	"context"
