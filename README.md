@@ -54,7 +54,7 @@ All tools return JSON data including the requested object and HTTP status code.
 ### Install from Source
 
 ```bash
-go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.5.0
+go install github.com/grokify/aha-mcp-server/cmd/mcp-aha@v0.7.0
 ```
 
 ### Build from Source
@@ -62,7 +62,7 @@ go install github.com/grokify/aha-mcp-server/cmd/aha-mcp-server@v0.5.0
 ```bash
 git clone https://github.com/grokify/aha-mcp-server.git
 cd aha-mcp-server
-go build ./cmd/aha-mcp-server
+go build ./cmd/mcp-aha
 ```
 
 ## Configuration
@@ -72,7 +72,7 @@ go build ./cmd/aha-mcp-server
 1. **API Token**: Generate an API token from your Aha! account settings
 2. **Domain**: Your Aha! subdomain (e.g., if your workspace is at `mycompany.aha.io`, your domain is `mycompany`)
 
-### Environment Variables
+### Option 1: Direct Credentials
 
 Set the following environment variables:
 
@@ -81,18 +81,59 @@ export AHA_API_TOKEN="your_api_token_here"
 export AHA_DOMAIN="your_aha_subdomain"
 ```
 
+Or use command-line flags:
+
+```bash
+mcp-aha --subdomain mycompany --api-key your-api-key
+```
+
+### Option 2: Vault-Backed Credentials
+
+Use [omnitoken](https://github.com/plexusone/omnitoken) with vault backends for secure credential storage.
+
+| Provider | URI Pattern | Requirements |
+|----------|-------------|--------------|
+| 1Password | `op://vault` | `OP_SERVICE_ACCOUNT_TOKEN` env var |
+| Bitwarden | `bw://org-id` | `BW_ACCESS_TOKEN` and `BW_ORGANIZATION_ID` env vars |
+| Keeper | `keeper://` | `KSM_TOKEN` or `KSM_CONFIG` env var |
+| File | `file:///path` | None |
+
+#### 1Password Example
+
+```bash
+export OP_SERVICE_ACCOUNT_TOKEN="ops_..."
+mcp-aha --vault op://MyVault --credentials-name aha
+```
+
+#### Bitwarden Example
+
+```bash
+export BW_ACCESS_TOKEN="..."
+export BW_ORGANIZATION_ID="..."
+mcp-aha --vault bw://org-id --credentials-name aha
+```
+
+#### Keeper Example
+
+```bash
+export KSM_TOKEN="US:..."
+mcp-aha --vault keeper:// --credentials-name aha
+```
+
 ### Claude Desktop Configuration
 
-Add this to your Claude Desktop configuration file:
+Add to your Claude Desktop configuration file:
 
-**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`  
+**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+#### With Direct Credentials
 
 ```json
 {
   "mcpServers": {
     "aha": {
-      "command": "aha-mcp-server",
+      "command": "mcp-aha",
       "env": {
         "AHA_API_TOKEN": "your_api_token_here",
         "AHA_DOMAIN": "your_aha_subdomain"
@@ -102,9 +143,74 @@ Add this to your Claude Desktop configuration file:
 }
 ```
 
+#### With 1Password
+
+```json
+{
+  "mcpServers": {
+    "aha": {
+      "command": "mcp-aha",
+      "env": {
+        "OP_SERVICE_ACCOUNT_TOKEN": "ops_...",
+        "OMNITOKEN_VAULT_URI": "op://MyVault",
+        "OMNITOKEN_CREDENTIALS_NAME": "aha"
+      }
+    }
+  }
+}
+```
+
+#### With Bitwarden
+
+```json
+{
+  "mcpServers": {
+    "aha": {
+      "command": "mcp-aha",
+      "env": {
+        "BW_ACCESS_TOKEN": "...",
+        "BW_ORGANIZATION_ID": "...",
+        "OMNITOKEN_VAULT_URI": "bw://org-id",
+        "OMNITOKEN_CREDENTIALS_NAME": "aha"
+      }
+    }
+  }
+}
+```
+
+#### With Keeper
+
+```json
+{
+  "mcpServers": {
+    "aha": {
+      "command": "mcp-aha",
+      "env": {
+        "KSM_TOKEN": "US:...",
+        "OMNITOKEN_VAULT_URI": "keeper://",
+        "OMNITOKEN_CREDENTIALS_NAME": "aha"
+      }
+    }
+  }
+}
+```
+
+### Environment Variables Reference
+
+| Variable | Flag | Description |
+|----------|------|-------------|
+| `AHA_DOMAIN` | `--subdomain` | Aha! subdomain |
+| `AHA_API_TOKEN` | `--api-key` | Aha! API key |
+| `OMNITOKEN_VAULT_URI` | `--vault` | Vault URI for credentials |
+| `OMNITOKEN_CREDENTIALS_NAME` | `--credentials-name` | Name of credentials in vault (default: `aha`) |
+| `OP_SERVICE_ACCOUNT_TOKEN` | - | 1Password service account token |
+| `BW_ACCESS_TOKEN` | - | Bitwarden access token |
+| `BW_ORGANIZATION_ID` | - | Bitwarden organization ID |
+| `KSM_TOKEN` | - | Keeper token (format: `REGION:TOKEN`) |
+
 ### Other MCP Clients
 
-For other MCP clients, configure them to run the `aha-mcp-server` command with the required environment variables.
+For other MCP clients, configure them to run the `mcp-aha` command with the required environment variables.
 
 ## Usage
 
@@ -160,7 +266,7 @@ Example tool calls:
 You can run the server in HTTP mode for debugging or integration with other tools:
 
 ```bash
-aha-mcp-server --http :8080
+mcp-aha --http :8080
 ```
 
 This will start an HTTP server on port 8080 instead of using stdio.
@@ -168,7 +274,7 @@ This will start an HTTP server on port 8080 instead of using stdio.
 ### Command Line Options
 
 ```bash
-aha-mcp-server [OPTIONS]
+mcp-aha [OPTIONS]
 
 Options:
   -h, --http string    HTTP address (e.g., :8080) - if set, uses HTTP instead of stdio
@@ -204,8 +310,8 @@ export MCP_DEBUG=1
 ### Project Structure
 
 ```
-aha-mcp-server/
-├── cmd/aha-mcp-server/     # Main application entry point
+mcp-aha/
+├── cmd/mcp-aha/     # Main application entry point
 ├── tools/                  # Tool implementations
 ├── mcputil/               # MCP utility functions
 ├── codegen/               # Code generation templates
@@ -216,7 +322,7 @@ aha-mcp-server/
 ### Building
 
 ```bash
-go build ./cmd/aha-mcp-server
+go build ./cmd/mcp-aha
 ```
 
 ### Testing
@@ -265,5 +371,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
  [license-url]: https://github.com/grokify/aha-mcp-server/blob/main/LICENSE
  [used-by-svg]: https://sourcegraph.com/github.com/grokify/aha-mcp-server/-/badge.svg
  [used-by-url]: https://sourcegraph.com/github.com/grokify/aha-mcp-server?badge
- [loc-svg]: https://tokei.rs/b1/github/grokify/aha-mcp-server
+ [loc-svg]: https://tokei.rs/b1/github/grokify/mcp-aha
  [repo-url]: https://github.com/grokify/aha-mcp-server
